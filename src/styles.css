@@ -92,4 +92,3 @@ button { touch-action: manipulation; }
 .menu-copy h1 { font-size: clamp(40px, 4.5vw, 58px); letter-spacing: -3px; line-height: 1.1; }
 .menu-copy h1 em { font-size: clamp(70px, 7vw, 92px); line-height: 1; letter-spacing: -5px; }
 @media (max-width: 620px) { .menu-copy h1 { font-size: 41px; }.menu-copy h1 em { font-size: 67px; }.camp-instructions { font-size: 10px; }.rune-seal small { font-size: 7px; } }
-

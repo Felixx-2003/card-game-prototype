@@ -140,4 +140,3 @@ export default function App() {
     {debug && import.meta.env.DEV && <aside className="debug-panel"><b>DEVELOPER TOOLS · ~ to hide</b>{(['restart', 'energy', 'heal', 'cards', 'boss', 'win', 'lose'] as DebugAction[]).map(action => <button key={action} onClick={() => { commit(s => debugAction(s, action)); setMenu(false); }}>{action}</button>)}<button onClick={() => { try { localStorage.removeItem(SAVE_KEY); } catch { setStorageWarning(true); } setGame(initialState()); setMenu(true); setSelected(null); }}>Clear local save</button><small>Screen {game.screen} · seed {game.seed}</small><div className="debug-log">{game.log.slice(-8).map((line, i) => <p key={i}>{line}</p>)}</div></aside>}
   </div>;
 }
-

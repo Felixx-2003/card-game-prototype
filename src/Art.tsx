@@ -32,4 +32,3 @@ export function CardArt({ type, id }: { type: string; id: string }) {
     </g>
   </svg>;
 }
-
