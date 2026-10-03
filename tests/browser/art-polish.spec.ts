@@ -34,7 +34,7 @@ test('cartoon vectors, fixed landscape battle, portrait prompt, and archived art
  }
  await page.setViewportSize({width:390,height:844});await expect(page.getByRole('heading',{name:'Rotate device to play'})).toBeVisible();await expect(page.locator('.battle-board')).toBeHidden();
  await page.setViewportSize({width:1280,height:720});await page.getByLabel('Art theme',{exact:true}).selectOption('d');await expect(page.locator('.player-card image')).toHaveAttribute('href','/art/storybook-atlas.png');
- for(const theme of ['a','b','c']){await page.getByLabel('Art theme',{exact:true}).selectOption(theme);await expect(page.locator('.player-card svg')).toBeVisible();}
+ for(const theme of ['a','b','c']){await page.getByLabel('Art theme',{exact:true}).selectOption(theme);await expect(page.locator('.player-card svg').first()).toBeVisible();}
 });
 test('practice is usable at smallest landscape with every spotlight visible',async({page})=>{
  await page.setViewportSize({width:640,height:360});await page.getByRole('button',{name:/New adventure/}).click();await page.locator('.hero-choice.mage').click();

@@ -1,31 +1,30 @@
-/* Cartoon Quest: one material vocabulary across the entire game. */
+/* Original Frostwood materials: cool stage, warm wood, gold decisions. */
 .game-shell[data-theme='c'] {
- --ink:#302d42;--paper:#fff3d8;--paper-shade:#ecd5b4;--gold:#efbc62;--gold-light:#ffe1a0;--jade:#477f78;--jade-light:#b4d5bb;--berry:#995b69;--violet:#8173a5;
- --frame-common:#8c715d;--frame-rare:#4e8899;--frame-epic:#9473a7;
- --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;
- --stroke:3px;--corner:12px;--card-corner:16px;--panel-corner:18px;
- --edge-shadow:0 4px 0 var(--ink);--panel-shadow:0 5px 0 #302d4270,0 12px 24px #1b263a30;
- --control-fill:var(--paper);--control-ink:var(--ink);--control-edge:var(--ink);
+ --ink:#292332;--wood:#795242;--wood-dark:#4b3531;--wood-light:#bd885c;--paper:#fff0cf;--paper-shade:#e7c89a;--gold:#e9b755;--gold-light:#ffe3a3;--ice:#95ccd6;--ice-dark:#497e91;--jade:#547f78;--jade-light:#b5d9bf;--berry:#a26372;--violet:#8670a1;
+ --frame-common:#bf8b62;--frame-rare:#6ba6b4;--frame-epic:#ae86bc;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;
+ --stroke:3px;--corner:12px 15px 11px 14px;--card-corner:13px;--panel-corner:22px;
+ --edge-shadow:0 4px 0 var(--wood-dark);--panel-shadow:0 6px 0 var(--wood-dark),0 16px 28px #182d4055;
  --font:Nunito,sans-serif;--display:Nunito,sans-serif;
+ --world-sky:#85bdce;--world-light:#d4edf1;--world-far:#659bac;--world-mid:#4b7e94;--world-ground:#658f9a;--world-path:#c2d5d4;--world-front:#284b61;--world-outline:#304557;--world-trunk:#486675;--world-canopy:#416f82;--world-stone:#9daeb9;--platform-top:#b5d4d7;--platform-edge:#5b8898;--platform-mark:#edf1d7;
+ color:var(--ink);background:var(--world-sky);height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-rows:48px minmax(0,1fr);
 }
-.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button,.reward-screen button:not(.playing-card),.camp-screen button:not(.playing-card)) {
- color:var(--control-ink);background:var(--control-fill);border:var(--stroke) solid var(--control-edge);border-radius:var(--corner);box-shadow:var(--edge-shadow),inset 0 2px 0 #ffffff80;clip-path:none;font-family:var(--font);font-weight:900;letter-spacing:0;text-decoration:none;transition:filter 120ms,box-shadow 120ms,translate 120ms;
+.game-shell[data-theme='c'].screen-menu {grid-template-rows:minmax(0,1fr);}
+.game-shell[data-theme='c'] :where(.primary,.primary-button,.secondary-button,.quiet-button,.text-button,.icon-button,.close-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.remove-rune,.boon-choices button,.special-reward,.tutorial-navigation button) {
+ --button-fill:var(--wood);--button-text:var(--paper);background:var(--button-fill);color:var(--button-text);border:var(--stroke) solid var(--ink);border-radius:var(--corner);box-shadow:var(--edge-shadow),inset 0 2px 0 #ffffff35,inset 0 -2px 0 #00000020;clip-path:none;font:900 14px/1.2 var(--font);letter-spacing:0;text-decoration:none;transition:translate 120ms,filter 120ms,box-shadow 120ms;
 }
-.game-shell[data-theme='c'] :where(.primary-button,.end-turn-button) {--control-fill:var(--gold);--control-ink:var(--ink);}
-.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button):hover:not(:disabled) {filter:brightness(1.08);translate:0 -2px;}
-.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button):active:not(:disabled) {translate:0 3px;box-shadow:0 1px 0 var(--ink);}
+.game-shell[data-theme='c'] :where(.primary,.primary-button,.end-turn-button) {--button-fill:var(--gold);--button-text:var(--ink);}
+.game-shell[data-theme='c'] :where(.primary,.primary-button,.secondary-button,.quiet-button,.text-button,.icon-button,.close-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.remove-rune,.boon-choices button,.special-reward):hover:not(:disabled) {translate:0 -2px;filter:brightness(1.1);}
+.game-shell[data-theme='c'] :where(.primary,.primary-button,.secondary-button,.quiet-button,.text-button,.icon-button,.close-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.remove-rune,.boon-choices button,.special-reward):active:not(:disabled) {translate:0 3px;box-shadow:0 1px 0 var(--wood-dark);}
 .game-shell[data-theme='c'] button:focus-visible {outline:3px solid var(--gold-light);outline-offset:4px;}
-.game-shell[data-theme='c'] button:disabled {filter:saturate(.45);opacity:.65;}
-.game-shell[data-theme='c'] :where(.settings-panel,.tutorial-modal,.deck-modal,.pause-modal,.lesson-card,.camp-panel) {background:var(--paper);color:var(--ink);border:var(--stroke) solid var(--ink);border-radius:var(--panel-corner);box-shadow:var(--panel-shadow);}
-.game-shell[data-theme='c'] :where(.playing-card,.actor-card) {border-radius:var(--card-corner);background:var(--paper);color:var(--ink);}
-
-/* The title screen presents the same physical hero cards as the battle. */
-.game-shell[data-theme='c'] .menu-screen {background:linear-gradient(135deg,#f5ebd3,#c7d9bd 70%,#8db4a1);}
-.game-shell[data-theme='c'] .menu-hero,.game-shell[data-theme='c'] .menu-mage {background:var(--paper);border:6px solid var(--ink);border-radius:22px;box-shadow:0 8px 0 var(--ink),0 20px 30px #302d4233;padding:34px 8px 28px;overflow:hidden;}
-.game-shell[data-theme='c'] .menu-hero:before,.game-shell[data-theme='c'] .menu-mage:before {content:'WARRIOR';position:absolute;top:7px;left:0;width:100%;text-align:center;font-size:20px;font-weight:1000;color:var(--ink);}
-.game-shell[data-theme='c'] .menu-mage:before {content:'MAGE';}
-.game-shell[data-theme='c'] .menu-hero:after,.game-shell[data-theme='c'] .menu-mage:after {content:'THE DEFENDER';position:absolute;bottom:5px;left:0;width:100%;text-align:center;font-size:12px;font-weight:900;color:var(--jade);letter-spacing:1px;}
-.game-shell[data-theme='c'] .menu-mage:after {content:'THE WIZARD';}
-.game-shell[data-theme='c'] .menu-hero svg,.game-shell[data-theme='c'] .menu-mage svg {border-radius:10px;border:2px solid var(--ink);}
-.game-shell[data-theme='c'] .hero-choice {border:4px solid var(--ink);border-radius:var(--panel-corner);background:var(--paper);box-shadow:var(--panel-shadow);}
-.game-shell[data-theme='c'] .hero-choice>.cartoon-portrait {border-block:2px solid var(--ink);background:#a9bea6;}
+.game-shell[data-theme='c'] button:disabled {filter:saturate(.4);opacity:.65;}
+.game-shell[data-theme='c'] :where(.settings-panel,.tutorial-modal,.deck-modal,.paper-modal,.lesson-card,.camp-instructions,.boon-choices) {color:var(--ink);background:var(--paper);border:5px solid var(--wood);border-radius:var(--panel-corner);box-shadow:0 0 0 3px var(--ink),var(--panel-shadow);}
+.game-shell[data-theme='c'] select {background:var(--paper);color:var(--ink);border:2px solid var(--wood-dark);border-radius:8px;font-family:var(--font);}
+.game-shell[data-theme='c'] .screen-stage {position:relative;z-index:1;min-height:0;height:100%;}
+.game-shell[data-theme='c'] .game-header {position:relative;z-index:3;background:transparent;border:0;height:48px;padding:5px 20px;}
+.game-shell[data-theme='c'] .game-header .brand {color:var(--paper);text-shadow:0 2px var(--ink);font-size:14px;}.game-shell[data-theme='c'] .brand small {display:none;}
+.game-shell[data-theme='c'] .run-track span {background:var(--wood);color:var(--paper);border:2px solid var(--ink);width:27px;height:27px;}
+.game-shell[data-theme='c'] .run-track span.current {background:var(--gold);color:var(--ink);}.game-shell[data-theme='c'] .run-track span.complete {background:var(--jade);}
+.game-shell[data-theme='c'] .theme-control {color:var(--paper);font-size:10px;}.game-shell[data-theme='c'] .theme-control select {height:30px;font-size:11px;}
+.game-shell[data-theme='c'] .header-controls .quiet-button {min-height:32px;padding:4px 9px;font-size:11px;}
+.game-shell[data-theme='c'] .forest-decoration {display:none;}
+.rules-keyword {color:var(--gold-light);font-weight:1000;}

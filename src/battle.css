@@ -1,82 +1,55 @@
-/* The bottom row is the decision zone: resource, hand, commit action. */
-.game-shell[data-theme='c'].is-battle {--battle-rail:clamp(116px,11vw,150px);--battle-actor-w:clamp(144px,12.7vw,180px);--battle-actor-h:clamp(156px,24vh,202px);--battle-hand-w:clamp(112px,10.5vw,146px);--battle-hand-h:clamp(146px,22vh,184px);}
-.game-shell[data-theme='c'].is-battle .battle-board {grid-template-areas:'left heading right' 'left enemies right' 'left hero right' 'energy hand turn';grid-template-rows:28px calc(var(--battle-actor-h) + 42px) var(--battle-actor-h) minmax(0,1fr);padding-inline:clamp(12px,2vw,30px);gap:12px;}
-.game-shell[data-theme='c'].is-battle .hand-energy {grid-area:energy;align-self:center;position:relative;z-index:4;}
-.game-shell[data-theme='c'].is-battle .turn-station {grid-area:turn;align-self:center;margin:0;z-index:4;}
+/* Fixed Frostwood stage: utility rails around one central decision lane. */
+.game-shell[data-theme='c'].is-battle {--battle-rail:clamp(112px,11vw,150px);--battle-actor-w:clamp(140px,12vw,166px);--battle-actor-h:clamp(178px,26vh,212px);--battle-hand-w:clamp(110px,10vw,140px);--battle-hand-h:clamp(140px,22vh,178px);grid-template-rows:48px minmax(0,1fr);}
+.game-shell[data-theme='c'].is-battle .battle-board {grid-template-areas:'left heading right' 'left enemies right' 'left hero right' 'energy hand turn';grid-template-rows:26px calc(var(--battle-actor-h) + 44px) calc(var(--battle-actor-h) + 8px) minmax(0,1fr);padding:3px clamp(12px,2vw,28px) max(10px,env(safe-area-inset-bottom));gap:9px;overflow:visible;position:relative;isolation:isolate;}
+.game-shell[data-theme='c'].is-battle .battle-left,.game-shell[data-theme='c'].is-battle .battle-right {padding-top:34px;gap:9px;overflow:visible;}
+.game-shell[data-theme='c'].is-battle .encounter-heading {padding:0 68px;}.game-shell[data-theme='c'].is-battle .encounter-heading h1 {font-size:22px;line-height:26px;color:var(--paper);text-shadow:0 3px var(--ink);}
+.game-shell[data-theme='c'].is-battle .enemy-row {align-items:flex-start;padding-top:0;gap:clamp(32px,4vw,56px);}
+.game-shell[data-theme='c'].is-battle .intent {height:34px;min-height:34px;margin-bottom:7px;line-height:13px;font-size:11px;padding:0 3px;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:var(--corner);box-shadow:0 3px 0 var(--wood-dark);}
+.game-shell[data-theme='c'].is-battle .intent.defend {background:#bad7d3;border-color:var(--ink);color:var(--ink);}.game-shell[data-theme='c'].is-battle .intent.special,.game-shell[data-theme='c'].is-battle .intent.debuff {background:#e6c0b2;border-color:var(--ink);color:var(--ink);}
+.game-shell[data-theme='c'].is-battle .actor-card {height:var(--battle-actor-h);width:var(--battle-actor-w);}
+.game-shell[data-theme='c'].is-battle .actor-with-effects {overflow:visible;}.game-shell[data-theme='c'].is-battle .hero-and-gear {align-items:flex-start;}
 .game-shell[data-theme='c'].is-battle .energy-station {padding:0;border:0;box-shadow:none;background:none;}
-.game-shell[data-theme='c'].is-battle .energy-meter {padding:12px 10px;background:var(--paper);border:3px solid var(--ink);border-radius:var(--panel-corner);box-shadow:var(--edge-shadow);color:var(--ink);transform:none;}
-.game-shell[data-theme='c'].is-battle .energy-heading {display:flex;justify-content:space-between;align-items:center;gap:4px;}
-.game-shell[data-theme='c'].is-battle .energy-heading>b {font-size:10px;color:var(--ink);}
-.game-shell[data-theme='c'].is-battle .energy-value {font-size:27px;color:var(--jade);line-height:30px;}
-.game-shell[data-theme='c'].is-battle .energy-value small {font-size:13px;}
-.game-shell[data-theme='c'].is-battle .energy-bar {height:14px;background:var(--paper-shade);border:2px solid var(--ink);border-radius:7px;}
-.game-shell[data-theme='c'].is-battle .energy-fill {background:var(--gold);}
-.game-shell[data-theme='c'].is-battle .energy-refill {font-size:9px;color:var(--ink);}
-.game-shell[data-theme='c'].is-battle .battle-left,.game-shell[data-theme='c'].is-battle .battle-right {padding-top:40px;gap:10px;overflow:visible;}
-.game-shell[data-theme='c'].is-battle .hero-abilities {margin:0;gap:8px;}
-.game-shell[data-theme='c'].is-battle .ability-button {border-radius:var(--corner);clip-path:none;min-height:56px;}
-.game-shell[data-theme='c'].is-battle .passive-skill {background:#fff3d8dd;color:var(--ink);border:2px solid var(--ink);border-radius:var(--corner);padding:7px;font-size:10px;}
-.game-shell[data-theme='c'].is-battle .side-actions button,.game-shell[data-theme='c'].is-battle .selection-actions button {border-radius:var(--corner);min-height:38px;clip-path:none;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:var(--edge-shadow);}
-.game-shell[data-theme='c'].is-battle .side-actions .pause-control {width:100%;border-radius:var(--corner);font-size:15px;}
-.game-shell[data-theme='c'].is-battle .end-turn-button {border-radius:var(--corner);clip-path:none;background:var(--gold);color:var(--ink);border:3px solid var(--ink);box-shadow:var(--edge-shadow);min-height:56px;font-size:17px;}
-.game-shell[data-theme='c'].is-battle .turn-station>span {color:var(--paper);text-shadow:0 1px 2px var(--ink);font-size:10px;}
-.game-shell[data-theme='c'].is-battle .gear-slot {background:#fff3d8e8;color:var(--ink);border:2px solid var(--ink);border-radius:var(--corner);box-shadow:0 3px 0 #302d4266;min-height:60px;}
-.game-shell[data-theme='c'].is-battle .battle-footer {margin-top:auto;color:var(--paper);text-shadow:0 1px 2px var(--ink);}
+.game-shell[data-theme='c'].is-battle .hero-abilities {margin:0;gap:7px;}
+.game-shell[data-theme='c'].is-battle .ability-button {background:var(--wood);color:var(--paper);border:3px solid var(--ink);border-radius:var(--corner);box-shadow:var(--edge-shadow);clip-path:none;min-height:52px;}
+.game-shell[data-theme='c'].is-battle .ability-button small {color:var(--gold-light);}.game-shell[data-theme='c'].is-battle .passive-skill {padding:6px;background:var(--wood-dark);color:var(--paper);border:2px solid var(--ink);border-radius:var(--corner);font-size:10px;}
+.game-shell[data-theme='c'].is-battle .side-actions button,.game-shell[data-theme='c'].is-battle .selection-actions button,.game-shell[data-theme='c'].is-battle .side-actions button.pause-control,.game-shell[data-theme='c'].is-battle .header-controls .quiet-button {background:var(--wood);color:var(--paper);border:3px solid var(--ink);border-radius:var(--corner);box-shadow:var(--edge-shadow),inset 0 2px #bd885c;min-height:36px;clip-path:none;}
+.game-shell[data-theme='c'].is-battle .side-actions .pause-control {width:100%;font-size:15px;}
+.game-shell[data-theme='c'].is-battle .header-controls .quiet-button {min-height:30px;border-width:2px;}
+.game-shell[data-theme='c'].is-battle .gear-slot {background:var(--wood-dark);color:var(--paper);border:2px solid var(--ink);border-radius:var(--corner);box-shadow:0 3px var(--wood-dark);min-height:58px;}.game-shell[data-theme='c'].is-battle .gear-slot small {color:var(--gold-light);}.game-shell[data-theme='c'].is-battle .gear-slot>span {color:var(--gold);}
+.game-shell[data-theme='c'].is-battle .global-buffs {gap:4px;}.game-shell[data-theme='c'].is-battle .buff-icon {background:var(--gold);border-color:var(--ink);min-height:27px;}
+.game-shell[data-theme='c'].is-battle .battle-footer {margin-top:auto;color:var(--paper);text-shadow:0 1px var(--ink);font-size:9px;}.game-shell[data-theme='c'].is-battle .last-log {color:var(--paper);}
+.game-shell[data-theme='c'].is-battle .hand-energy {grid-area:energy;align-self:center;position:relative;z-index:8;}
+.game-shell[data-theme='c'].is-battle .turn-station {grid-area:turn;align-self:center;margin:0;z-index:8;}
+.game-shell[data-theme='c'].is-battle .end-turn-button {display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;background:var(--gold);color:var(--ink);border:3px solid var(--ink);border-radius:var(--corner);clip-path:none;box-shadow:var(--edge-shadow),inset 0 2px var(--gold-light);min-height:54px;font-size:clamp(14px,1.2vw,17px);}
+.game-shell[data-theme='c'].is-battle .end-turn-button>span {margin:0;}.game-shell[data-theme='c'].is-battle .turn-station>span {color:var(--paper);text-shadow:0 1px var(--ink);font-size:9px;}
+.game-shell[data-theme='c'].is-battle .hand {justify-content:safe center;align-items:center;padding:22px 20px 21px;gap:0;position:relative;z-index:6;overflow-x:auto;overflow-y:hidden;}
+.game-shell[data-theme='c'].is-battle .hand .playing-card {margin-inline:-8px;max-height:calc(100% - 6px);}
+.game-shell[data-theme='c'].is-battle .hand .playing-card:hover:not(.dragging) {z-index:90;transform:translateY(-14px) rotate(0deg) scale(1.06) !important;}
+.game-shell[data-theme='c'].is-battle .hand .playing-card.selected:not(.dragging) {z-index:91;transform:translateY(-16px) rotate(0deg) scale(1.04) !important;}
+.game-shell[data-theme='c'].is-battle .hand .playing-card.dragging {opacity:0;}
+.hand-tray {position:absolute;grid-area:hand;inset:45% -12px -2px;z-index:0;pointer-events:none;border:4px solid var(--ink);border-radius:18px 18px 8px 8px;background:repeating-linear-gradient(0deg,transparent 0 25px,#4b353130 26px 28px),var(--wood);box-shadow:inset 0 6px var(--wood-light),0 7px 0 var(--wood-dark),0 15px 14px #182d4050;transform:perspective(500px) rotateX(6deg);}
+.hand-tray:before,.hand-tray:after {content:'';position:absolute;top:12px;bottom:12px;width:6px;border-inline:2px solid var(--wood-dark);background:var(--wood-light);}.hand-tray:before {left:16px;}.hand-tray:after {right:16px;}
+.game-shell[data-theme='c'].is-battle .energy-meter {background:var(--wood-dark);color:var(--paper);padding:10px;border:3px solid var(--ink);border-radius:var(--corner);box-shadow:var(--edge-shadow);transform:none;}
+.game-shell[data-theme='c'].is-battle .energy-heading {display:flex;justify-content:space-between;align-items:center;gap:3px;}.game-shell[data-theme='c'].is-battle .energy-heading>b {font-size:9px;color:var(--paper);}.game-shell[data-theme='c'].is-battle .energy-value {font-size:26px;line-height:28px;color:#9cd7e8;}.game-shell[data-theme='c'].is-battle .energy-value small {font-size:12px;}
+.game-shell[data-theme='c'].is-battle .energy-bar {position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;height:24px;border:0;background:none;overflow:visible;box-shadow:none;}
+.game-shell[data-theme='c'].is-battle .energy-fill {display:none;}.game-shell[data-theme='c'].is-battle .energy-pips {position:static;display:flex;justify-content:space-evenly;width:100%;gap:5px;height:22px;}
+.game-shell[data-theme='c'].is-battle .energy-pips>i {flex:1;height:22px;background:#83bed4;border:2px solid var(--ink);border-radius:7px 7px 10px 10px;box-shadow:inset 0 3px #c9e8e5,0 2px var(--ink);transform:rotate(-3deg);}
+.game-shell[data-theme='c'].is-battle .energy-pips>i.spent {background:#655860;box-shadow:inset 0 2px #86757b;}.game-shell[data-theme='c'].is-battle .energy-refill {font-size:8px;color:var(--paper);}.game-shell[data-theme='c'].is-battle .energy-meter.empty .energy-value {color:#eea39b;}
+.game-shell[data-theme='c'] .guided-tip {background:var(--paper);border:4px solid var(--wood);border-radius:var(--panel-corner);color:var(--ink);box-shadow:0 0 0 3px var(--ink),var(--panel-shadow);}
 @media (orientation:landscape) and (max-height:500px) {
- .game-shell[data-theme='c'].is-battle {--battle-rail:100px;--battle-actor-w:104px;--battle-actor-h:88px;--battle-hand-w:88px;--battle-hand-h:80px;}
- .game-shell[data-theme='c'].is-battle .battle-board {grid-template-rows:0px 117px 88px minmax(0,1fr);gap:3px;padding-inline:8px;padding-top:2px;padding-bottom:8px;}
+ .game-shell[data-theme='c'].is-battle {--battle-rail:100px;--battle-actor-w:104px;--battle-actor-h:90px;--battle-hand-w:90px;--battle-hand-h:78px;grid-template-rows:28px minmax(0,1fr);}
+ .game-shell[data-theme='c'].is-battle .battle-board {grid-template-rows:0px 120px 90px minmax(0,1fr);gap:3px;padding:2px 8px max(8px,env(safe-area-inset-bottom));}
  .game-shell[data-theme='c'].is-battle .battle-left,.game-shell[data-theme='c'].is-battle .battle-right {padding-top:0;gap:4px;}
- .game-shell[data-theme='c'].is-battle .hero-abilities {gap:4px;}
- .game-shell[data-theme='c'].is-battle .ability-button {min-height:32px;border-width:2px;padding:2px;font-size:9px;}
- .game-shell[data-theme='c'].is-battle .passive-skill {font-size:8px;padding:3px;}
- .game-shell[data-theme='c'].is-battle .side-actions button,.game-shell[data-theme='c'].is-battle .selection-actions button {min-height:27px;padding:2px;font-size:9px;border-width:2px;}
- .game-shell[data-theme='c'].is-battle .side-actions .pause-control {min-height:27px;font-size:13px;}
- .game-shell[data-theme='c'].is-battle .gear-slot {min-height:41px;}
- .game-shell[data-theme='c'].is-battle .global-buffs {gap:2px;}.game-shell[data-theme='c'].is-battle .buff-icon {min-height:17px;font-size:8px;padding:1px 3px;}
- .game-shell[data-theme='c'].is-battle .battle-footer {font-size:7px;padding:2px 0;gap:2px;}
- .game-shell[data-theme='c'].is-battle .energy-meter {padding:5px 7px;border-width:2px;border-radius:12px;}
- .game-shell[data-theme='c'].is-battle .energy-heading>b {font-size:8px;}.game-shell[data-theme='c'].is-battle .energy-value {font-size:21px;line-height:23px;}
- .game-shell[data-theme='c'].is-battle .energy-bar {height:11px;}.game-shell[data-theme='c'].is-battle .energy-refill {font-size:7px;}
- .game-shell[data-theme='c'].is-battle .end-turn-button {min-height:42px;font-size:13px;border-width:2px;}
- .game-shell[data-theme='c'].is-battle .encounter-heading {left:var(--battle-rail);width:calc(100% - var(--battle-rail)*2);}
+ .game-shell[data-theme='c'].is-battle .enemy-row {gap:23px;}.game-shell[data-theme='c'].is-battle:has(.enemy-wrap:nth-child(3)) {--battle-actor-w:clamp(83px,13vw,104px);--battle-hand-w:clamp(80px,12vw,90px);}
+ .game-shell[data-theme='c'].is-battle .intent {height:26px;min-height:26px;font-size:9px;line-height:10px;margin-bottom:3px;}
+ .game-shell[data-theme='c'].is-battle .hero-abilities {gap:4px;}.game-shell[data-theme='c'].is-battle .ability-button {min-height:32px;border-width:2px;font-size:9px;padding:2px;}.game-shell[data-theme='c'].is-battle .passive-skill {font-size:8px;padding:3px;}
+ .game-shell[data-theme='c'].is-battle .side-actions button,.game-shell[data-theme='c'].is-battle .selection-actions button,.game-shell[data-theme='c'].is-battle .side-actions button.pause-control {min-height:27px;font-size:9px;border-width:2px;padding:2px;}
+ .game-shell[data-theme='c'].is-battle .gear-slot {min-height:41px;}.game-shell[data-theme='c'].is-battle .global-buffs {gap:2px;}.game-shell[data-theme='c'].is-battle .buff-icon {min-height:17px;font-size:8px;padding:1px 3px;}.game-shell[data-theme='c'].is-battle .battle-footer {font-size:7px;gap:2px;padding:2px 0;}
+ .game-shell[data-theme='c'].is-battle .hand {padding:10px 12px 13px;}.game-shell[data-theme='c'].is-battle .hand .playing-card {margin-inline:-4px;height:78px;max-height:none;}
+ .game-shell[data-theme='c'].is-battle .hand .playing-card:hover:not(.dragging) {transform:translateY(-6px) rotate(0deg) scale(1.025) !important;}.game-shell[data-theme='c'].is-battle .hand .playing-card.selected:not(.dragging) {transform:translateY(-8px) rotate(0deg) scale(1.025) !important;}
+ .game-shell[data-theme='c'].is-battle .energy-meter {padding:5px 7px;border-width:2px;}.game-shell[data-theme='c'].is-battle .energy-heading>b {font-size:8px;}.game-shell[data-theme='c'].is-battle .energy-value {font-size:20px;line-height:22px;}.game-shell[data-theme='c'].is-battle .energy-value small {font-size:9px;}.game-shell[data-theme='c'].is-battle .energy-bar {height:15px;}.game-shell[data-theme='c'].is-battle .energy-pips,.game-shell[data-theme='c'].is-battle .energy-pips>i {height:13px;}.game-shell[data-theme='c'].is-battle .energy-pips {gap:3px;}.game-shell[data-theme='c'].is-battle .energy-refill {font-size:7px;}
+ .game-shell[data-theme='c'].is-battle .end-turn-button {min-height:42px;font-size:12px;padding:4px;gap:5px;border-width:2px;}.game-shell[data-theme='c'].is-battle .turn-station>span {font-size:8px;}
+ .hand-tray {inset:43% -3px 0;border-width:3px;border-radius:12px 12px 5px 5px;box-shadow:inset 0 3px var(--wood-light),0 5px var(--wood-dark);}
 }
 
-/* One card construction: dark edge, colored binding, parchment caption, art window. */
-.game-shell[data-theme='c'] .playing-card {--binding:var(--frame-common);border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink),inset 0 0 0 2px var(--binding);background:var(--paper);padding:8px;}
-.game-shell[data-theme='c'] .playing-card.rare {--binding:var(--frame-rare);}.game-shell[data-theme='c'] .playing-card.epic {--binding:var(--frame-epic);}
-.game-shell[data-theme='c'].is-battle .actor-card {--binding:var(--berry);border:4px solid var(--ink);border-radius:var(--card-corner);background:var(--binding);padding:5px;box-shadow:0 5px 0 var(--ink),0 10px 14px #172e4355;}
-.game-shell[data-theme='c'].is-battle .player-card {--binding:var(--jade);border-color:var(--ink);box-shadow:0 5px 0 var(--ink),0 10px 14px #172e4355;}
-.game-shell[data-theme='c'].is-battle .actor-title {background:var(--paper);color:var(--ink);border-radius:8px 8px 0 0;border-bottom:2px solid var(--ink);font-size:14px;line-height:20px;}
-.game-shell[data-theme='c'].is-battle .actor-card>.cartoon-portrait {transform:none;width:100%;min-height:0;flex:1 1 auto;background:#a9bea6;border-inline:2px solid var(--ink);}
-.game-shell[data-theme='c'].is-battle .hp-bar {background:var(--paper-shade);border:2px solid var(--ink);border-radius:0 0 8px 8px;height:22px;}
-.game-shell[data-theme='c'].is-battle .hp-bar>span {background:#d98e83;}.game-shell[data-theme='c'].is-battle .hp-bar>b {color:var(--ink);font-size:11px;}
-.game-shell[data-theme='c'].is-battle .intent {border-color:var(--ink);border-radius:var(--corner);box-shadow:0 3px 0 var(--ink);color:var(--ink);background:var(--paper);}
-.game-shell[data-theme='c'].is-battle .intent.defend {background:var(--jade-light);border-color:var(--ink);color:var(--ink);}.game-shell[data-theme='c'].is-battle .intent.special,.game-shell[data-theme='c'].is-battle .intent.debuff {border-color:var(--ink);background:#edc1ac;color:var(--ink);}
-.game-shell[data-theme='c'].is-battle .hand {justify-content:safe center;padding:24px 22px 22px;gap:4px;}
-.game-shell[data-theme='c'].is-battle .hand .playing-card {border:3px solid var(--ink);border-radius:var(--card-corner);background:var(--paper);box-shadow:0 4px 0 var(--ink),inset 0 0 0 2px var(--binding),0 9px 12px #172e4350;padding:6px;}
-.game-shell[data-theme='c'].is-battle .hand .playing-card.rare,.game-shell[data-theme='c'].is-battle .hand .playing-card.epic {border-color:var(--ink);box-shadow:0 4px 0 var(--ink),inset 0 0 0 2px var(--binding),0 9px 12px #172e4350;}
-.game-shell[data-theme='c'].is-battle .hand .card-name {font-size:12px;min-height:27px;padding-left:19px;padding-right:3px;color:var(--ink);}
-.game-shell[data-theme='c'] .card-art {background:#dce1c5;border-radius:7px;border:1px solid var(--ink);}
-.game-shell[data-theme='c'].is-battle .hand .card-art {height:52px;flex:0 0 52px;width:100%;margin:1px 0 2px;}
-.game-shell[data-theme='c'] .card-type {background:var(--binding);color:var(--paper);border-radius:4px;font-size:8px;letter-spacing:.3px;}
-.game-shell[data-theme='c'].is-battle .hand .card-description {font-size:11px;line-height:13px;color:var(--ink);}
-.game-shell[data-theme='c'] .rarity-motif {color:var(--binding);}
-.game-shell[data-theme='c'].is-battle .energy-bar {width:100%;}
-.game-shell[data-theme='c'].is-battle .side-actions button.pause-control {background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--corner);box-shadow:var(--edge-shadow);}
-.game-shell[data-theme='c'].is-battle .header-controls .quiet-button {background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:var(--corner);box-shadow:0 3px 0 var(--ink);}
-.game-shell[data-theme='c'] .guided-tip {background:var(--paper);border:3px solid var(--ink);border-radius:var(--panel-corner);color:var(--ink);box-shadow:var(--panel-shadow);}
-@media (orientation:landscape) and (max-height:500px) {
- .game-shell[data-theme='c'].is-battle .actor-card {padding:3px;border-width:3px;border-radius:12px;}
- .game-shell[data-theme='c'].is-battle .actor-title {font-size:10px;line-height:12px;border-bottom-width:1px;}
- .game-shell[data-theme='c'].is-battle .hp-bar {height:15px;border-width:1px;}.game-shell[data-theme='c'].is-battle .hp-bar>b {font-size:9px;line-height:13px;}
- .game-shell[data-theme='c'].is-battle .hand {padding:10px 9px 13px;gap:4px;}
- .game-shell[data-theme='c'].is-battle .hand .playing-card {border-width:2px;border-radius:10px;padding:3px;}
- .game-shell[data-theme='c'].is-battle .hand .card-art {display:none;}
- .game-shell[data-theme='c'].is-battle .hand .card-name {font-size:9px;line-height:10px;min-height:21px;padding-left:15px;}
- .game-shell[data-theme='c'].is-battle .hand .card-description {font-size:9px;line-height:10px;}
- .game-shell[data-theme='c'].is-battle .side-actions button.pause-control {border-width:2px;}
-}
-
-.game-shell[data-theme='c'].is-battle .end-turn-button {display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;font-size:clamp(14px,1.3vw,17px);}
-.game-shell[data-theme='c'].is-battle .end-turn-button>span {margin:0;flex:0 0 auto;}
-@media (orientation:landscape) and (max-height:500px) {.game-shell[data-theme='c'].is-battle .end-turn-button {font-size:12px;gap:5px;padding:4px;}}
+@media (orientation:landscape) and (max-height:500px) {.game-shell[data-theme='c'].is-battle .encounter-heading {padding:0 45px;}.game-shell[data-theme='c'].is-battle .encounter-heading h1 {font-size:13px;line-height:16px;white-space:nowrap;}}

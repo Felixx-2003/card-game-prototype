@@ -1,0 +1,13 @@
+import {Portrait} from './Art';
+export function RulesText({text}:{text:string}) {return <>{text.split(/(\d+|Shield|Burn|Freeze|Weak|Vulnerable|Poison|Skill|Spell|Energy|Heal|damage)/gi).map((part,i)=>/^(\d+|Shield|Burn|Freeze|Weak|Vulnerable|Poison|Skill|Spell|Energy|Heal|damage)$/i.test(part)?<strong className="rules-keyword" key={i}>{part}</strong>:part)}</>}
+export function UnitPresentation({kind,name,hp,maxHp,attack,round,text,hero=false}:{kind:string;name:string;hp:number;maxHp:number;attack:number;round:number;text:string;hero?:boolean}) {
+ return <div className={`unit-presentation ${hero?'hero-unit':'enemy-unit'}`}>
+ <svg className="unit-frame" viewBox="0 0 200 240" preserveAspectRatio="none" aria-hidden="true"><path d="M100 5L190 48l3 175q0 10-12 10L18 235q-12-1-12-12L9 49Z" fill="var(--unit-frame)" stroke="var(--ink)" strokeWidth="7" strokeLinejoin="round"/><path d="M100 16L179 57l3 162q0 4-6 4L24 225q-6-1-6-6L20 58Z" fill="var(--unit-fill)" stroke="var(--unit-trim)" strokeWidth="4" strokeLinejoin="round"/><path d="M30 65l70-36 68 35" fill="none" stroke="#ffffff55" strokeWidth="3"/></svg>
+ <div className="unit-art"><Portrait kind={kind} theme="c"/></div>
+ <span className="unit-health hp-bar" title={`Health: ${hp} of ${maxHp}`}><svg viewBox="0 0 60 55" aria-hidden="true"><path d="M30 51Q-8 24 9 8q12-10 21 4 13-14 24-3 14 18-24 42Z" fill="#cc626c" stroke="var(--ink)" strokeWidth="4" strokeLinejoin="round"/><path d="M9 16q4-7 10-5" fill="none" stroke="#f5a199" strokeWidth="3" strokeLinecap="round"/></svg><b>{hp}<small>/ {maxHp}</small></b></span>
+ <span className="unit-attack" title={hero?`Base attack stat: ${attack}. Card damage is shown on each hand card.`:`Next action: ${attack} damage before modifiers.`}><svg viewBox="0 0 48 58" aria-hidden="true"><path d="M5 4l38-1-1 38-18 13L6 42Z" fill="#809aac" stroke="var(--ink)" strokeWidth="4" strokeLinejoin="round"/><path d="M11 10l25 0" stroke="#c4d4d6" strokeWidth="3"/></svg><b>⚔ {attack}</b></span>
+ <span className="unit-name actor-title"><svg viewBox="0 0 220 40" preserveAspectRatio="none" aria-hidden="true"><path d="M3 5l23 2 4-5 162 1 4 5 21-3-8 15 9 15-25-3-3 6-160-1-4-5-22 3 8-15Z" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" strokeLinejoin="round"/><path d="M26 8v23m167-22v22" stroke="var(--paper-shade)" strokeWidth="3"/></svg><b>{name}</b></span>
+ <span className="unit-effect"><RulesText text={text}/></span>
+ <span className="unit-counter" title={`Round ${round}`}><svg viewBox="0 0 54 48" aria-hidden="true"><path d="M14 3h26l11 21-12 21H14L3 24Z" fill="var(--gold)" stroke="var(--ink)" strokeWidth="4" strokeLinejoin="round"/><path d="M17 9h19" stroke="var(--gold-light)" strokeWidth="3"/></svg><b>{round}</b></span>
+ </div>;
+}

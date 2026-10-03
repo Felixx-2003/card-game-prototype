@@ -1,11 +1,11 @@
 /* The world presentation belongs to C. A/B/D remain rollback comparisons. */
 .game-shell[data-theme='c'].is-battle {
- --world-sky:#69c3b7;--world-light:#ffe38c;--world-far:#398c87;--world-mid:#27726f;--world-ground:#46745c;--world-path:#b9b879;--world-front:#163d3e;--world-outline:#24423f;--world-trunk:#366457;--world-canopy:#215850;--world-stone:#749687;--platform-top:#b6c878;--platform-edge:#527d60;--platform-mark:#d9df9b;
+ --world-sky:#85bdce;--world-light:#d4edf1;--world-far:#659bac;--world-mid:#4b7e94;--world-ground:#658f9a;--world-path:#c2d5d4;--world-front:#284b61;--world-outline:#304557;--world-trunk:#486675;--world-canopy:#416f82;--world-stone:#9daeb9;--platform-top:#b5d4d7;--platform-edge:#5b8898;--platform-mark:#edf1d7;
  --battle-rail:clamp(132px,12vw,162px);--battle-actor-w:clamp(144px,12.4vw,170px);--battle-actor-h:clamp(158px,25vh,198px);--battle-hand-w:clamp(114px,10.2vw,140px);--battle-hand-h:clamp(148px,22.5vh,180px);
  background:var(--world-sky);color:#253c40;grid-template-rows:48px minmax(0,1fr);
 }
 .game-shell[data-theme='c'][data-environment='grove'] {--world-sky:#477ba3;--world-light:#b9e9c6;--world-far:#34637d;--world-mid:#234d66;--world-ground:#38626b;--world-path:#6da798;--world-front:#173949;--world-canopy:#254953;--world-trunk:#31525e;--platform-top:#77b8a2;--platform-edge:#335f66;--platform-mark:#b4e3bd;}
-.game-shell[data-theme='c'][data-environment='ruins'] {--world-sky:#e3a572;--world-light:#ffe6ae;--world-far:#bb8069;--world-mid:#956858;--world-ground:#796c63;--world-path:#c6a589;--world-front:#453f4c;--world-canopy:#76624e;--world-trunk:#756355;--world-stone:#a7957f;--world-outline:#4e4a4c;--platform-top:#d6bc85;--platform-edge:#8c7763;--platform-mark:#f4ddb0;}
+.game-shell[data-theme='c'][data-environment='ruins'] {--world-sky:#819fb7;--world-light:#d9e6e8;--world-far:#617b94;--world-mid:#4b637e;--world-ground:#627986;--world-path:#acbfc5;--world-front:#303f56;--world-canopy:#596e81;--world-trunk:#596776;--world-stone:#99aebb;--world-outline:#364757;--platform-top:#bdd3dc;--platform-edge:#667f92;--platform-mark:#edf1df;}
 .game-shell[data-theme='c'][data-environment='arena'] {--world-sky:#57486e;--world-light:#ffc67c;--world-far:#493c62;--world-mid:#352f4f;--world-ground:#534b64;--world-path:#917080;--world-front:#242a42;--world-canopy:#45394e;--world-stone:#736580;--world-outline:#292e46;--platform-top:#b291a0;--platform-edge:#61516d;--platform-mark:#efc498;}
 .battle-world {position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;animation:world-reveal 440ms ease-out both;}
 .battle-world > svg {position:absolute;width:calc(100% + 28px);height:calc(100% + 20px);inset:-10px -14px;}

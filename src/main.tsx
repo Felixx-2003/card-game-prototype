@@ -8,5 +8,7 @@ import './battle-legacy.css';
 import './world.css';
 import './design-system.css';
 import './battle.css';
+import './cards.css';
+import './screens.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
