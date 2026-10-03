@@ -25,7 +25,7 @@ export const BATTLE_TIPS = [
   'End Turn refills Energy and draws back to five. Shield protects you.',
 ];
 
-export function Tutorial({ theme, onClose, onSkip, tips, onTipsChange }: { theme: 'a' | 'b'; onClose: () => void; onSkip: () => void; tips: boolean; onTipsChange: (value: boolean) => void }) {
+export function Tutorial({ theme, onClose, onSkip, tips, onTipsChange }: { theme: 'a' | 'b' | 'c'; onClose: () => void; onSkip: () => void; tips: boolean; onTipsChange: (value: boolean) => void }) {
   const [step, setStep] = useState(0);
   const panel = useRef<HTMLElement>(null);
   const close = useRef<HTMLButtonElement>(null);

@@ -1,5 +1,5 @@
-export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { kind?: string; className?: string; theme?: 'a' | 'b' }) {
-  if (theme === 'b') return <PolishedPortrait kind={kind} className={className} />;
+export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { kind?: string; className?: string; theme?: 'a' | 'b' | 'c' }) {
+  if (theme !== 'a') return <PolishedPortrait kind={kind} className={className} />;
   const mage = kind === 'mage';
   const boss = /boss|regent|warden|king|colossus/.test(kind);
   const enemy = !['warrior', 'mage'].includes(kind);
@@ -22,8 +22,8 @@ export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { ki
   </svg>;
 }
 
-export function CardArt({ type, id, theme = 'a' }: { type: string; id: string; theme?: 'a' | 'b' }) {
-  if (theme === 'b') return <PolishedCardArt type={type} id={id} />;
+export function CardArt({ type, id, theme = 'a' }: { type: string; id: string; theme?: 'a' | 'b' | 'c' }) {
+  if (theme !== 'a') return <PolishedCardArt type={type} id={id} />;
   const spell = type === 'spell'; const rune = type === 'rune'; const equipment = type === 'equipment';
   const guard = /guard|shield|armor|ward|defend|fortify/.test(id);
   const heal = /heal|mend|renew|blood|siphon/.test(id);

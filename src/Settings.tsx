@@ -1,7 +1,7 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { audioController, playSfx } from './audio';
 
-export interface SettingsProps { onClose: () => void; theme: 'a' | 'b'; onThemeChange: (theme: 'a' | 'b') => void }
+export interface SettingsProps { onClose: () => void; theme: 'a' | 'b' | 'c'; onThemeChange: (theme: 'a' | 'b' | 'c') => void }
 export function Settings({ onClose, theme, onThemeChange }: SettingsProps) {
   const settings = useSyncExternalStore(audioController.subscribe, audioController.getSettings, audioController.getSettings);
   const panel = useRef<HTMLElement>(null);
@@ -28,7 +28,7 @@ export function Settings({ onClose, theme, onThemeChange }: SettingsProps) {
       <label className="settings-volume" htmlFor="sfx-volume"><span>Sound effects <output>{settings.sfxVolume}%</output></span><input id="sfx-volume" type="range" min="0" max="100" value={settings.sfxVolume} aria-valuetext={`${settings.sfxVolume} percent`} onChange={event => audioController.setSettings({ sfxVolume: Number(event.target.value) })} onPointerUp={() => playSfx('reveal')} onKeyUp={() => playSfx('click')} /></label>
       <p className="settings-hint">An original melody accompanies your journey. Your sound preferences are saved on this device.</p>
     </fieldset>
-    <fieldset className="settings-group"><legend>Appearance</legend><label className="settings-theme" htmlFor="theme-choice">Visual theme<select id="theme-choice" value={theme} onChange={event => { onThemeChange(event.target.value as 'a' | 'b'); playSfx('click'); }}><option value="a">A · Handmade</option><option value="b">B · Painted fantasy</option></select></label></fieldset>
+    <fieldset className="settings-group"><legend>Appearance</legend><label className="settings-theme" htmlFor="theme-choice">Visual theme<select id="theme-choice" value={theme} onChange={event => { onThemeChange(event.target.value as 'a' | 'b' | 'c'); playSfx('click'); }}><option value="a">A · Handmade</option><option value="b">B · Painted fantasy</option><option value="c">C · Soft fantasy</option></select></label></fieldset>
     <button className="primary" onClick={() => { playSfx('click'); onClose(); }}>Back to adventure</button>
   </section>;
 }

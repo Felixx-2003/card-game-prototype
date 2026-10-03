@@ -35,7 +35,7 @@ test('both themes keep a fixed battle screen and consistent card hierarchy', asy
   await page.getByRole('button', { name: /New adventure/ }).click();
   await page.locator('.hero-choice.warrior').click();
   const original = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), SAVE);
-  for (const theme of ['a', 'b']) {
+  for (const theme of ['a', 'b', 'c']) {
     await page.getByLabel('Art theme', { exact: true }).selectOption(theme);
     for (const [width, height] of [[1280,720], [1366,768], [1280,800], [1920,1080], [390,844]]) {
       await page.setViewportSize({ width, height });
@@ -49,12 +49,12 @@ test('both themes keep a fixed battle screen and consistent card hierarchy', asy
       expect(layout.hand.w).toBeLessThan(layout.hero.w + (width < 500 ? 1 : 0)); expect(layout.hand.h).toBeLessThan(layout.hero.h);
       expect(layout.turn.bottom).toBeLessThan(height); expect(layout.footer.bottom).toBeLessThanOrEqual(height + 1);
       expect(layout.title.bottom).toBeLessThanOrEqual(layout.intent.y + 1);
-      expect(layout.font).toContain('Alegreya');
+      expect(layout.font).toContain('Segoe UI');
       await page.mouse.wheel(0, 600); expect(await page.evaluate(() => scrollY)).toBe(0);
     }
   }
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), SAVE)).toEqual(original);
-  await page.reload(); await expect(page.locator('.game-shell')).toHaveAttribute('data-theme', 'b');
+  await page.reload(); await expect(page.locator('.game-shell')).toHaveAttribute('data-theme', 'c');
 });
 
 test('side effect icons expose tooltips, energy gates cards, and free runes can target unaffordable cards', async ({ page }) => {
@@ -76,6 +76,12 @@ test('side effect icons expose tooltips, energy gates cards, and free runes can 
   const heroRail = await page.locator('.hero-and-gear .status-rail').boundingBox();
   expect(heroRail!.y + heroRail!.height + 5).toBeLessThanOrEqual(heroBox!.y + heroBox!.height + 1);
   await expect(page.locator('.hp-bar .status-icon')).toHaveCount(0);
+  const centers = await page.locator('.status-icon').evaluateAll(icons => icons.map(e => {
+    const a=e.getBoundingClientRect(), b=e.querySelector('.status-count')!.getBoundingClientRect();
+    return Math.abs(a.x+a.width/2-b.x-b.width/2)+Math.abs(a.y+a.height/2-b.y-b.height/2);
+  }));
+  expect(centers.every(n=>n<2)).toBe(true);
+
   await expect(page.getByRole('progressbar', { name: 'Energy' })).toHaveAttribute('aria-valuenow','0');
   const fireball = page.locator('.hand [data-card-id="fireball"]');
   await expect(fireball).toHaveClass(/unaffordable/); await expect(fireball).toHaveAttribute('aria-disabled','true');

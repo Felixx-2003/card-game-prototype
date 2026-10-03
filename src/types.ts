@@ -1,3 +1,4 @@
+import type { GlobalBuffId } from './abilities';
 export type HeroId = 'warrior' | 'mage';
 export type CardType = 'skill' | 'spell' | 'equipment' | 'rune';
 export type Status = 'burn' | 'freeze' | 'poison' | 'weak' | 'vulnerable';
@@ -13,6 +14,6 @@ export interface Intent { kind: 'attack' | 'defend' | 'buff' | 'debuff' | 'speci
 export interface EnemyDef { id: string; name: string; role: string; hp: number; art: string; tier: 'normal' | 'elite' | 'boss'; pattern: Intent[]; phase2?: Intent[] }
 export interface Enemy { uid: string; defId: string; hp: number; maxHp: number; shield: number; statuses: Statuses; patternIndex: number; phase: number; intent: Intent }
 export interface Reward { id: string; kind: 'card' | 'heal' | 'upgrade'; cardId?: string; name: string; description: string }
-export interface CombatEvent { id: number; target: string; kind: 'damage' | 'heal' | 'shield' | 'status'; amount: number; label?: string }
-export interface GameState { version: 1; screen: Screen; heroId: HeroId; hp: number; maxHp: number; shield: number; statuses: Statuses; energy: number; maxEnergy: number; turn: number; encounter: number; cards: CardInstance[]; deck: string[]; hand: string[]; discard: string[]; gear: Partial<Record<Slot, string>>; enemies: Enemy[]; log: string[]; events: CombatEvent[]; rewards: Reward[]; firstSkill: boolean; firstSpell: boolean; upgradesRemaining: number; seed: number; serial: number; battlesWon: number }
+export interface CombatEvent { id: number; target: string; kind: 'damage' | 'heal' | 'shield' | 'status' | 'ability' | 'passive'; amount: number; label?: string }
+export interface GameState { version: 1; globalBuffs?: GlobalBuffId[]; boonEncounter?: number; activeReadyTurn?: number; screen: Screen; heroId: HeroId; hp: number; maxHp: number; shield: number; statuses: Statuses; energy: number; maxEnergy: number; turn: number; encounter: number; cards: CardInstance[]; deck: string[]; hand: string[]; discard: string[]; gear: Partial<Record<Slot, string>>; enemies: Enemy[]; log: string[]; events: CombatEvent[]; rewards: Reward[]; firstSkill: boolean; firstSpell: boolean; upgradesRemaining: number; seed: number; serial: number; battlesWon: number }
 export type DebugAction = 'restart' | 'energy' | 'heal' | 'cards' | 'boss' | 'win' | 'lose';

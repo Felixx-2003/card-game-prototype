@@ -1,5 +1,6 @@
 export type SfxName = 'hover' | 'drag' | 'drop' | 'play' | 'hit' | 'heal' | 'equip' | 'rune' | 'reveal' | 'reward' | 'click' | 'victory' | 'defeat' | 'turn' | 'invalid';
 export interface AudioSettings { muted: boolean; musicVolume: number; sfxVolume: number }
+export type MusicScene = 'menu' | 'battle' | 'danger' | 'progression' | 'victory' | 'defeat';
 const STORAGE_KEY = 'card-game-prototype-audio-v1';
 const DEFAULTS: AudioSettings = { muted: false, musicVolume: 35, sfxVolume: 65 };
 export function normalizeAudioSettings(value: Partial<AudioSettings> = {}): AudioSettings {
@@ -10,9 +11,15 @@ function readSettings(): AudioSettings {
   try { const value: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}'); return normalizeAudioSettings(value && typeof value === 'object' ? value : {}); } catch { return { ...DEFAULTS }; }
 }
 
-// An original 16-bar lantern waltz. Sparse bell notes float over warm fifths.
-const MELODY = [69, 72, 76, 74, 72, 69, 67, 64, 65, 69, 72, 76, 74, 72, 69, 67, 64, 67, 71, 74, 72, 71, 67, 64, 65, 69, 72, 74, 72, 69, 67, 69];
-const ROOTS = [45, 41, 48, 43];
+// Original procedural themes: each phrase has its own contour, pulse and harmony.
+const MUSIC: Record<MusicScene, { melody: number[]; roots: number[]; beat: number; noteLength: number }> = {
+  menu: { melody: [69,72,76,74,72,69,67,64,65,69,72,76,74,72,69,67,64,67,71,74,72,71,67,64,65,69,72,74,72,69,67,69], roots: [45,41,48,43], beat: .6, noteLength: .95 },
+  battle: { melody: [64,71,67,74,69,76,72,67,64,72,69,76,71,67,74,69,65,72,69,77,72,69,76,71,67,74,71,79,74,71,77,72], roots: [40,43,36,38], beat: .42, noteLength: .34 },
+  danger: { melody: [57,64,60,63,57,65,60,62,55,62,59,65,55,63,59,62,53,60,57,63,53,62,57,60], roots: [33,34,29], beat: .48, noteLength: .4 },
+  progression: { melody: [72,76,79,76,81,79,76,72,74,77,81,84,81,77,74,72,76,79,83,79,84,83,79,76,77,81,84,86,84,81,77,76], roots: [48,53,50,55], beat: .46, noteLength: .42 },
+  victory: { melody: [72,76,79,84,83,79,76,72,74,77,81,86,84,81,77,74,76,79,84,88,86,84,79,76], roots: [48,53,55], beat: .5, noteLength: .56 },
+  defeat: { melody: [64,62,60,57,59,57,55,52,57,55,53,50,52,50,48,45], roots: [40,38,36,33], beat: .72, noteLength: .64 },
+};
 const hz = (midi: number) => 440 * Math.pow(2, (midi - 69) / 12);
 
 export class AudioController {
@@ -23,14 +30,33 @@ export class AudioController {
   private timer: ReturnType<typeof setInterval> | null = null;
   private nextNote = 0;
   private step = 0;
+  private scene: MusicScene = 'menu';
   private unlocked = false;
   private unavailable = false;
   private listeners = new Set<() => void>();
   private voices = new Set<OscillatorNode>();
+  private musicEnvelopes = new Map<OscillatorNode, GainNode>();
   private lastSfx = new Map<SfxName, number>();
   private visibilityBound = false;
 
   getSettings = (): AudioSettings => this.settings;
+  setScene = (scene: MusicScene): void => {
+    if (scene === this.scene) return;
+    this.scene = scene;
+    // Briefly dip the music bus so sustained notes from the previous theme resolve cleanly.
+    if (this.context && this.musicGain && this.timer) {
+      const now = this.context.currentTime;
+      this.musicGain.gain.cancelScheduledValues(now);
+      this.musicGain.gain.setTargetAtTime(0, now, 0.06);
+      this.musicGain.gain.setTargetAtTime(this.settings.muted ? 0 : this.settings.musicVolume / 100 * 0.28, now + 0.22, 0.1);
+      // Retire both sounding notes and notes queued just ahead by the scheduler.
+      for (const [voice, envelope] of this.musicEnvelopes) {
+        envelope.gain.cancelScheduledValues(now);
+        envelope.gain.setTargetAtTime(0, now, 0.035);
+        try { voice.stop(now + 0.16); } catch { /* A voice may already be ending. */ }
+      }
+    }
+  };
   subscribe = (listener: () => void): (() => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   setSettings = (patch: Partial<AudioSettings>): void => {
     this.settings = normalizeAudioSettings({ ...this.settings, ...patch });
@@ -97,16 +123,29 @@ export class AudioController {
   }
   private scheduleMusic(): void {
     if (!this.context || !this.musicGain) return;
+    const pattern = MUSIC[this.scene];
     while (this.nextNote < this.context.currentTime + 0.4) {
-      const index = this.step % MELODY.length;
-      this.tone(hz(MELODY[index]), this.nextNote, 0.95, 'sine', 0.22, this.musicGain, true);
+      const index = this.step % pattern.melody.length;
+      const phrase = Math.floor(this.step / pattern.melody.length);
+      const variation = phrase % 3;
+      const baseNote = pattern.melody[index];
+      // Three phrase shapes: the written line, a lightly ornamented octave lift with rests,
+      // and a lower contour that answers the first phrase.
+      const rest = variation === 1 && index % 11 === 5;
+      const octave = variation === 1 && index % 8 >= 5 ? 12 : variation === 2 && index % 8 < 2 ? -12 : 0;
+      if (!rest) this.tone(hz(baseNote + octave), this.nextNote, pattern.noteLength, 'sine', 0.22, this.musicGain, true);
       if (index % 8 === 0) {
-        const root = ROOTS[Math.floor(index / 8)];
-        this.tone(hz(root), this.nextNote, 4.4, 'triangle', 0.11, this.musicGain, true);
-        this.tone(hz(root + 7), this.nextNote + 0.03, 4.3, 'sine', 0.08, this.musicGain, true);
+        const root = pattern.roots[(Math.floor(index / 8) + phrase) % pattern.roots.length];
+        const harmonyDuration = pattern.beat * (variation === 1 ? 3.5 : 7.5);
+        if (variation !== 2) this.tone(hz(root), this.nextNote, harmonyDuration, 'triangle', 0.11, this.musicGain, true);
+        this.tone(hz(root + (variation === 2 ? 12 : 7)), this.nextNote + 0.03, harmonyDuration, 'sine', 0.08, this.musicGain, true);
+      } else if (variation === 1 && index % 4 === 2) {
+        // A broken chord replaces the held pad for a more active second pass.
+        const root = pattern.roots[(Math.floor(index / 8) + phrase) % pattern.roots.length];
+        this.tone(hz(root + (index % 8 < 4 ? 7 : 12)), this.nextNote, pattern.beat * 1.8, 'triangle', 0.065, this.musicGain, true);
       }
       this.step++;
-      this.nextNote += 0.6;
+      this.nextNote += pattern.beat;
     }
   }
   private tone(frequency: number, start: number, duration: number, wave: OscillatorType, amplitude: number, output: GainNode, music = false, endFrequency?: number): void {
@@ -121,8 +160,8 @@ export class AudioController {
     envelope.gain.exponentialRampToValueAtTime(0.001, start + duration);
     oscillator.connect(envelope);
     envelope.connect(output);
-    if (music) this.voices.add(oscillator);
-    oscillator.onended = () => { this.voices.delete(oscillator); oscillator.disconnect(); envelope.disconnect(); };
+    if (music) { this.voices.add(oscillator); this.musicEnvelopes.set(oscillator, envelope); }
+    oscillator.onended = () => { this.voices.delete(oscillator); this.musicEnvelopes.delete(oscillator); oscillator.disconnect(); envelope.disconnect(); };
     oscillator.start(start);
     oscillator.stop(start + duration + 0.02);
   }
@@ -150,7 +189,7 @@ export class AudioController {
       case 'invalid': sound(130, 0, 0.12, 'triangle', 0.22); sound(110, 0.1, 0.15, 'triangle', 0.18); break;
     }
   };
-  getDebugState = () => ({ unlocked: this.unlocked, supported: !this.unavailable, contextState: this.context?.state ?? 'locked', musicRunning: this.timer !== null, activeMusicVoices: this.voices.size, settings: { ...this.settings } });
+  getDebugState = () => ({ unlocked: this.unlocked, supported: !this.unavailable, contextState: this.context?.state ?? 'locked', musicRunning: this.timer !== null, activeMusicVoices: this.voices.size, scene: this.scene, settings: { ...this.settings } });
   dispose(): void {
     this.stopMusic();
     if (this.visibilityBound && typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.onVisibility);

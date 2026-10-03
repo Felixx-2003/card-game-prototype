@@ -1,3 +1,4 @@
+import { activeSkillAvailable, CHARACTER_SKILLS, GLOBAL_BUFFS, buffValue, type GlobalBuffId } from './abilities';
 import { CARDS, ENCOUNTERS, ENEMIES, HEROES, RUNES } from './data';
 import type { CardInstance, CombatEvent, DebugAction, Effect, Enemy, GameState, HeroId, Intent, Status, Statuses } from './types';
 
@@ -13,7 +14,7 @@ function makeCard(s: GameState, defId: string): CardInstance { return { uid: `c$
 function draw(s: GameState, n: number) { for (let i = 0; i < n; i++) { if (!s.deck.length) { s.deck = shuffle(s, s.discard); s.discard = []; } const uid = s.deck.shift(); if (!uid) break; s.hand.push(uid); } }
 function gearCards(s: GameState) { return Object.values(s.gear).map(uid => cardBy(s, uid!)).filter((c): c is CardInstance => !!c); }
 export function getCardEffect(card: CardInstance): Effect { const d = CARDS[card.defId]; if (!d) return {}; const { cost: _cost, ...upgrade } = card.upgraded ? d.upgrade ?? {} : {}; return { ...d.effect, ...upgrade }; }
-export function getCost(s: GameState, value: CardInstance | string): number { const card = resolveCard(s, value); if (!card) return 99; const d = CARDS[card.defId]; let cost = card.upgraded && d.upgrade?.cost !== undefined ? d.upgrade.cost : d.cost; if (card.rune === 'cheap') cost--; if (d.type === 'skill' && s.heroId === 'warrior' && !s.firstSkill) cost--; if (d.type === 'spell' && !s.firstSpell) for (const gear of gearCards(s)) cost -= CARDS[gear.defId].gear?.firstSpellDiscount ?? 0; return Math.max(0, cost); }
+export function getCost(s: GameState, value: CardInstance | string): number { const card = resolveCard(s, value); if (!card) return 99; const d = CARDS[card.defId]; let cost = card.upgraded && d.upgrade?.cost !== undefined ? d.upgrade.cost : d.cost; if (card.rune === 'cheap') cost--; if (d.type === 'skill' && s.heroId === 'warrior' && !s.firstSkill) cost--; if (d.type === 'spell' && !s.firstSpell) cost -= buffValue(s, 'firstSpellDiscount'); if (d.type === 'spell' && !s.firstSpell) for (const gear of gearCards(s)) cost -= CARDS[gear.defId].gear?.firstSpellDiscount ?? 0; return Math.max(0, cost); }
 export function canAttachRune(card: CardInstance, runeId: string) { const d = CARDS[card.defId], rune = RUNES[runeId]; return !!d && !!rune && rune.compatible.includes(d.type) && (runeId !== 'chain' || !d.effect.all) && (!rune.requiresDamage || !!d.effect.damage || !!d.gear?.skillDamage || !!d.gear?.spellDamage); }
 export function canTarget(s: GameState, value: CardInstance | string, target: string): boolean {
   const card = resolveCard(s, value); if (!card || !CARDS[card.defId]) return false; const d = CARDS[card.defId];
@@ -37,12 +38,12 @@ function damage(s: GameState, target: string, amount: number, sourceStatuses: St
   else { s.shield -= absorbed; s.hp = Math.max(0, s.hp - value + absorbed); }
   event(s, target, 'damage', value - absorbed, absorbed ? `${absorbed} blocked` : undefined);
 }
-function startTurn(s: GameState) { s.turn++; s.energy = s.maxEnergy; s.shield = 0; s.firstSkill = false; s.firstSpell = false; for (const card of gearCards(s)) { const g = CARDS[card.defId].gear; if (g?.shieldPerTurn) shield(s, 'hero', g.shieldPerTurn); if (g?.healPerTurn) heal(s, g.healPerTurn); if (card.rune === 'renew') heal(s, 2); } draw(s, Math.max(0, 5 - s.hand.length)); log(s, `Turn ${s.turn} · ${s.energy} Energy`); }
+function startTurn(s: GameState) { s.turn++; s.energy = s.maxEnergy; s.shield = 0; s.firstSkill = false; s.firstSpell = false; for (const card of gearCards(s)) { const g = CARDS[card.defId].gear; if (g?.shieldPerTurn) shield(s, 'hero', g.shieldPerTurn); if (g?.healPerTurn) heal(s, g.healPerTurn); if (card.rune === 'renew') heal(s, 2 + buffValue(s, 'runePower')); } draw(s, Math.max(0, 5 - s.hand.length)); log(s, `Turn ${s.turn} · ${s.energy} Energy`); }
 function beginBattle(s: GameState) {
-  const encounter = ENCOUNTERS[s.encounter]; s.screen = 'battle'; s.turn = 0; s.shield = 0; s.statuses = {}; s.gear = {}; s.deck = shuffle(s, s.cards.map(c => c.uid)); s.hand = []; s.discard = []; s.rewards = []; s.events = []; s.log = [];
+  const encounter = ENCOUNTERS[s.encounter]; s.screen = 'battle'; s.turn = 0; s.activeReadyTurn = 1; s.shield = 0; s.statuses = {}; s.gear = {}; s.deck = shuffle(s, s.cards.map(c => c.uid)); s.hand = []; s.discard = []; s.rewards = []; s.events = []; s.log = [];
   let enemyIds = encounter.enemyIds; if (s.encounter === 2 && random(s) > 0.5) enemyIds = ['lantern-warden'];
   s.enemies = enemyIds.map((id, i) => { const d = ENEMIES[id]; return { uid: `enemy-${i}`, defId: id, hp: d.hp, maxHp: d.hp, shield: 0, statuses: {}, patternIndex: 0, phase: 1, intent: { ...d.pattern[0] } }; });
-  log(s, `${encounter.name} · ${HEROES[s.heroId].name} enters the fray.`); startTurn(s); return s;
+  log(s, `${encounter.name} · ${HEROES[s.heroId].name} enters the fray.`); startTurn(s); const openingShield = buffValue(s, 'startShield'); if (openingShield) shield(s, 'hero', openingShield); return s;
 }
 export function startRun(heroId: HeroId, seed = Date.now()): GameState { const s = initialState(); s.heroId = heroId; s.seed = seed >>> 0; s.hp = s.maxHp = HEROES[heroId].hp; s.cards = HEROES[heroId].startingDeck.map(id => makeCard(s, id)); return beginBattle(s); }
 function rewards(s: GameState) {
@@ -53,17 +54,17 @@ function rewards(s: GameState) {
 function finish(s: GameState) { if (s.hp <= 0) { s.screen = 'defeat'; log(s, 'The expedition ends. A new adventure awaits.'); return; } if (s.enemies.every(e => e.hp <= 0)) { s.battlesWon++; if (s.encounter === 3) { s.screen = 'victory'; log(s, 'The Hollow Crown falls. The orchard is free!'); } else { s.screen = 'reward'; s.upgradesRemaining = 1; heal(s, 10); rewards(s); log(s, 'Battle won! Recover 10 HP and choose a reward.'); } } }
 function effectActivation(s: GameState, effect: Effect, target: string, scale: number, bonus: number, card: CardInstance, runeOverride?: string) {
   const d = CARDS[card.defId]; const rune = runeOverride ?? card.rune;
-  let dmg = effect.damage ?? 0; if (dmg) { dmg += d.type === 'skill' ? HEROES[s.heroId].attack : 0; dmg += bonus; for (const gear of gearCards(s)) dmg += d.type === 'skill' ? CARDS[gear.defId].gear?.skillDamage ?? 0 : CARDS[gear.defId].gear?.spellDamage ?? 0; }
-  const magnitude = rune === 'power' ? 4 : rune === 'blood' ? 5 : 0;
+  let dmg = effect.damage ?? 0; if (dmg) { dmg += d.type === 'skill' ? HEROES[s.heroId].attack : 0; dmg += bonus; if (d.type === 'skill') dmg += buffValue(s, 'skillDamage'); for (const gear of gearCards(s)) dmg += d.type === 'skill' ? CARDS[gear.defId].gear?.skillDamage ?? 0 : CARDS[gear.defId].gear?.spellDamage ?? 0; }
+  const runeBoost = buffValue(s, 'runePower'); const magnitude = rune === 'power' ? 4 + runeBoost : rune === 'blood' ? 5 + runeBoost : 0;
   if (dmg) dmg = Math.ceil((dmg + magnitude) * scale);
   const targets = effect.all ? s.enemies.filter(e => e.hp > 0).map(e => e.uid) : [target];
   for (const targetUid of targets) {
     if (dmg) damage(s, targetUid, dmg, s.statuses);
     if (effect.status && s.enemies.some(e => e.uid === targetUid && e.hp > 0)) status(s, targetUid, effect.status, effect.stacks ?? 1);
-    if (dmg && s.enemies.some(e => e.uid === targetUid && e.hp > 0)) { if (rune === 'fire') status(s, targetUid, 'burn', 2); if (rune === 'frost' && !(s.enemies.find(e => e.uid === targetUid)?.statuses.freeze)) status(s, targetUid, 'freeze', 1); }
+    if (dmg && s.enemies.some(e => e.uid === targetUid && e.hp > 0)) { if (rune === 'fire') status(s, targetUid, 'burn', 2 + buffValue(s, 'runePower')); if (rune === 'frost' && !(s.enemies.find(e => e.uid === targetUid)?.statuses.freeze)) status(s, targetUid, 'freeze', 1); }
   }
-  if (effect.shield) shield(s, 'hero', Math.ceil((effect.shield + bonus + (rune === 'blood' ? 5 : 0)) * scale));
-  if (effect.heal) heal(s, Math.ceil((effect.heal + bonus + (rune === 'blood' ? 5 : 0)) * scale));
+  if (effect.shield) shield(s, 'hero', Math.ceil((effect.shield + bonus + (rune === 'blood' ? 5 + runeBoost : 0)) * scale));
+  if (effect.heal) heal(s, Math.ceil((effect.heal + bonus + (rune === 'blood' ? 5 + runeBoost : 0)) * scale));
   if (effect.draw) draw(s, effect.draw);
   if (effect.cleanse) s.statuses = {};
   if (rune === 'chain' && dmg && !effect.all) { const other = s.enemies.find(e => e.uid !== target && e.hp > 0); if (other) damage(s, other.uid, Math.ceil(dmg / 2), s.statuses); }
@@ -72,7 +73,7 @@ function equippedRuneEffects(s: GameState, card: CardInstance, target: string, e
   if (!effect.damage) return;
   const matchingGear = gearCards(s).filter(g => card.defId && ((CARDS[card.defId].type === 'skill' && CARDS[g.defId].gear?.skillDamage) || (CARDS[card.defId].type === 'spell' && CARDS[g.defId].gear?.spellDamage)));
   const targets = effect.all ? s.enemies.filter(e => e.hp > 0) : s.enemies.filter(e => e.uid === target && e.hp > 0);
-  for (const gear of matchingGear) { for (const enemy of targets) { if (gear.rune === 'fire') status(s, enemy.uid, 'burn', 2); if (gear.rune === 'frost' && !enemy.statuses.freeze) status(s, enemy.uid, 'freeze', 1); if (gear.rune === 'power') damage(s, enemy.uid, 3, s.statuses); } }
+  for (const gear of matchingGear) { for (const enemy of targets) { if (gear.rune === 'fire') status(s, enemy.uid, 'burn', 2 + buffValue(s, 'runePower')); if (gear.rune === 'frost' && !enemy.statuses.freeze) status(s, enemy.uid, 'freeze', 1); if (gear.rune === 'power') damage(s, enemy.uid, 3 + buffValue(s, 'runePower'), s.statuses); } }
 }
 export function playCard(state: GameState, uid: string, target: string): GameState {
   const card = cardBy(state, uid); if (!card || !canTarget(state, card, target)) return state; const def = CARDS[card.defId];
@@ -85,15 +86,33 @@ export function playCard(state: GameState, uid: string, target: string): GameSta
     destination.rune = def.runeId; s.cards = s.cards.filter(c => c.uid !== uid); log(s, `${def.name} attached to ${CARDS[destination.defId].name}.`); return s;
   }
   if (def.type === 'equipment') {
-    const old = s.gear[def.slot!]; if (old) s.discard.push(old); s.gear[def.slot!] = uid; if (def.gear?.shieldPerTurn) shield(s, 'hero', def.gear.shieldPerTurn); if (played.rune === 'renew') heal(s, 3); log(s, `${def.name} equipped${old ? ' · previous gear returned to discard' : ''}.`); return s;
+    const old = s.gear[def.slot!]; if (old) s.discard.push(old); s.gear[def.slot!] = uid; if (def.gear?.shieldPerTurn) shield(s, 'hero', def.gear.shieldPerTurn); if (played.rune === 'renew') heal(s, 3 + buffValue(s, 'runePower')); log(s, `${def.name} equipped${old ? ' · previous gear returned to discard' : ''}.`); return s;
   }
   s.discard.push(uid); const bonus = def.type === 'spell' && s.heroId === 'mage' && !s.firstSpell ? 2 : 0;
+  if ((def.type === 'skill' && s.heroId === 'warrior' && !s.firstSkill) || (def.type === 'spell' && s.heroId === 'mage' && !s.firstSpell)) event(s, 'hero', 'passive', 0, CHARACTER_SKILLS[s.heroId].passiveName);
   if (def.type === 'skill') s.firstSkill = true; if (def.type === 'spell') s.firstSpell = true;
   if (played.rune === 'blood') { damage(s, 'hero', 3, {}, true); if (s.hp <= 0) { finish(s); return s; } }
   const effect = getCardEffect(played); effectActivation(s, effect, target, 1, bonus, played); equippedRuneEffects(s, played, target, effect);
-  if (played.rune === 'echo') effectActivation(s, effect, target, 0.5, 0, played);
-  if (played.rune === 'renew') heal(s, 3);
+  if (played.rune === 'echo') effectActivation(s, effect, target, buffValue(s, 'runePower') ? 0.6 : 0.5, 0, played);
+  if (played.rune === 'renew') heal(s, 3 + buffValue(s, 'runePower'));
   log(s, `${def.name}${played.upgraded ? '+' : ''}${played.rune ? ` · ${RUNES[played.rune].name}` : ''} (${cost} Energy).`); finish(s); return s;
+}
+export function activateSkill(state: GameState): GameState {
+  if (!activeSkillAvailable(state)) return state;
+  const s = clone(state); const skill = CHARACTER_SKILLS[s.heroId]; s.events = [];
+  s.energy -= skill.cost; s.activeReadyTurn = s.turn + skill.cooldown;
+  event(s, 'hero', 'ability', 0, skill.name);
+  for (const enemy of s.enemies.filter(e => e.hp > 0)) {
+    damage(s, enemy.uid, s.heroId === 'warrior' ? 12 : 10, s.statuses);
+    if (s.heroId === 'mage' && enemy.hp > 0) status(s, enemy.uid, 'burn', 2);
+  }
+  if (s.heroId === 'warrior') shield(s, 'hero', 8); else draw(s, 1);
+  log(s, `${skill.name} · ready on Turn ${s.activeReadyTurn}`); finish(s); return s;
+}
+export function chooseGlobalBuff(state: GameState, id: GlobalBuffId): GameState {
+  if (!between(state) || !Object.hasOwn(GLOBAL_BUFFS, id) || state.boonEncounter === state.encounter || (state.globalBuffs ?? []).includes(id)) return state;
+  const s = clone(state); s.globalBuffs = [...(s.globalBuffs ?? []), id]; s.boonEncounter = s.encounter;
+  log(s, `Forest boon: ${GLOBAL_BUFFS[id].name}.`); return s;
 }
 export function discardCard(state: GameState, uid: string): GameState { if (state.screen !== 'battle' || !state.hand.includes(uid)) return state; const s = clone(state); s.hand = s.hand.filter(id => id !== uid); s.discard.push(uid); s.events = []; log(s, `${CARDS[cardBy(s, uid)!.defId].name} discarded. Draw to five next turn.`); return s; }
 function tick(s: GameState, target: string, statuses: Statuses, previous?: Statuses) { for (const type of ['burn', 'poison'] as const) { if (statuses[type]) { damage(s, target, statuses[type]!, {}, true); statuses[type]!--; } } for (const type of ['weak', 'vulnerable'] as const) if (statuses[type] && (!previous || previous[type])) statuses[type]!--; }
@@ -131,10 +150,12 @@ export function isValidSave(value: unknown): value is GameState {
   const intent = (v: unknown) => { if (!v || typeof v !== 'object') return false; const i=v as Intent; return ['attack','defend','buff','debuff','special'].includes(i.kind) && typeof i.label === 'string' && [i.damage,i.shield,i.stacks,i.heal].every(n => n === undefined || finite(n)) && (i.status === undefined || ['burn','poison','freeze','weak','vulnerable'].includes(i.status)); };
   if (!(s.version === 1 && Object.hasOwn(HEROES,s.heroId) && ['menu','select','battle','reward','upgrade','progress','victory','defeat'].includes(s.screen) && [s.hp,s.maxHp,s.energy,s.maxEnergy,s.shield,s.turn,s.serial,s.seed,s.battlesWon,s.upgradesRemaining].every(finite) && s.hp <= s.maxHp && Number.isInteger(s.encounter) && s.encounter >= 0 && s.encounter < 4 && typeof s.firstSkill === 'boolean' && typeof s.firstSpell === 'boolean' && statuses(s.statuses))) return false;
   if (!(Array.isArray(s.cards) && s.cards.every(c => !!c && typeof c.uid === 'string' && Object.hasOwn(CARDS,c.defId) && typeof c.upgraded === 'boolean' && (c.rune === undefined || typeof c.rune === 'string' && Object.hasOwn(RUNES,c.rune) && canAttachRune(c,c.rune))) && new Set(s.cards.map(c => c.uid)).size === s.cards.length)) return false;
+  if (s.globalBuffs !== undefined && (!Array.isArray(s.globalBuffs) || !s.globalBuffs.every(id => Object.hasOwn(GLOBAL_BUFFS,id)) || new Set(s.globalBuffs).size !== s.globalBuffs.length)) return false;
+  if ([s.activeReadyTurn,s.boonEncounter].some(n => n !== undefined && (!finite(n) || !Number.isInteger(n)))) return false;
   const uids = new Set(s.cards.map(c=>c.uid));
   if (![s.deck,s.hand,s.discard].every(a => Array.isArray(a) && a.every(uid => typeof uid === 'string' && uids.has(uid)))) return false;
   if (!s.gear || typeof s.gear !== 'object' || Array.isArray(s.gear) || !Object.entries(s.gear).every(([slot,uid]) => ['weapon','armor'].includes(slot) && typeof uid === 'string' && uids.has(uid) && CARDS[cardBy(s,uid)!.defId].type === 'equipment' && CARDS[cardBy(s,uid)!.defId].slot === slot)) return false;
   if (new Set(zonesForSave(s)).size !== zonesForSave(s).length || zonesForSave(s).length !== s.cards.length) return false;
-  return Array.isArray(s.enemies) && s.enemies.every(e => !!e && typeof e.uid === 'string' && Object.hasOwn(ENEMIES,e.defId) && [e.hp,e.maxHp,e.shield,e.patternIndex].every(finite) && Number.isInteger(e.patternIndex) && e.hp <= e.maxHp && [1,2].includes(e.phase) && intent(e.intent) && statuses(e.statuses)) && new Set(s.enemies.map(e=>e.uid)).size === s.enemies.length && Array.isArray(s.log) && s.log.every(l=>typeof l==='string') && Array.isArray(s.events) && s.events.every(e=>!!e && finite(e.id) && finite(e.amount) && typeof e.target==='string' && ['damage','heal','shield','status'].includes(e.kind) && (e.label === undefined || typeof e.label === 'string')) && Array.isArray(s.rewards) && s.rewards.every(r=>!!r && typeof r.id==='string' && typeof r.name==='string' && typeof r.description==='string' && ['card','heal','upgrade'].includes(r.kind) && (r.kind !== 'card' || Object.hasOwn(CARDS,r.cardId!))) && (s.screen !== 'battle' || s.enemies.length > 0 && s.maxHp > 0);
+  return Array.isArray(s.enemies) && s.enemies.every(e => !!e && typeof e.uid === 'string' && Object.hasOwn(ENEMIES,e.defId) && [e.hp,e.maxHp,e.shield,e.patternIndex].every(finite) && Number.isInteger(e.patternIndex) && e.hp <= e.maxHp && [1,2].includes(e.phase) && intent(e.intent) && statuses(e.statuses)) && new Set(s.enemies.map(e=>e.uid)).size === s.enemies.length && Array.isArray(s.log) && s.log.every(l=>typeof l==='string') && Array.isArray(s.events) && s.events.every(e=>!!e && finite(e.id) && finite(e.amount) && typeof e.target==='string' && ['damage','heal','shield','status','ability','passive'].includes(e.kind) && (e.label === undefined || typeof e.label === 'string')) && Array.isArray(s.rewards) && s.rewards.every(r=>!!r && typeof r.id==='string' && typeof r.name==='string' && typeof r.description==='string' && ['card','heal','upgrade'].includes(r.kind) && (r.kind !== 'card' || Object.hasOwn(CARDS,r.cardId!))) && (s.screen !== 'battle' || s.enemies.length > 0 && s.maxHp > 0);
 }
 function zonesForSave(s: GameState) { return [...s.deck,...s.hand,...s.discard,...Object.values(s.gear)]; }

@@ -326,3 +326,185 @@ button { touch-action: manipulation; }
   .is-battle .hand .card-description { font-size: 10.5px; }
   .is-battle .hand .rune-seal small { display: none; }
 }
+
+/* Theme C: soft, rounded anime-fantasy palette with a clean system sans. */
+.game-shell[data-theme='c'] {
+  --ink: #3e4d5b; --ink-soft: #687985; --paper: #f1e8dc; --paper-light: #fffaf3;
+  --forest: #558c86; --forest-dark: #396b6b; --moss: #a9c6a3; --ochre: #e8bd75;
+  --coral: #dc8e84; --teal: #81b5b1; --red: #c96f70;
+  --border: 2px solid var(--ink); --card-border: 2px solid #60717a;
+  --shadow: 0 4px 0 #85938c, 0 9px 20px #566b7020;
+  --shadow-lift: 0 6px 0 #85938c, 0 15px 25px #566b7030;
+  --radius: 22px; --rarity-rare: #5d9ca1; --rarity-epic: #d4a45e;
+  --board: #dce9e2;
+  background: radial-gradient(ellipse at 50% 43%, #f6f4e9 0%, #dce9e2 58%, #bed5d0 100%);
+}
+:root { --font: 'Segoe UI', 'Trebuchet MS', sans-serif; }
+.game-shell[data-theme='c']:before { opacity: .22; background: radial-gradient(ellipse, #fff9 0 1px, transparent 2px); background-size: 28px 28px; }
+.game-shell[data-theme='c'] .forest-decoration { opacity: .1; background: #7eaaa0; }
+.game-shell[data-theme='c'] .game-header { background: #f9fbf080; border-bottom-color: #829f9928; }
+.game-shell[data-theme='c'] .primary-button,
+.game-shell[data-theme='c'] .secondary-button,
+.game-shell[data-theme='c'] .end-turn-button { border-radius: 18px; box-shadow: 0 4px 0 #748982, inset 0 2px 0 #ffffff70; }
+.game-shell[data-theme='c'] .actor-card { border-width: 3px; border-radius: 24px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 10px 20px #647a7020; }
+.game-shell[data-theme='c'] .enemy-card { border-color: #a66e68; border-radius: 25px 25px 17px 17px; background: #fae7dc; }
+.game-shell[data-theme='c'] .enemy-card .actor-title { color: #855b5b; background: #f3d5c9; border-radius: 17px 17px 7px 7px; }
+.game-shell[data-theme='c'] .player-card { border-color: #56847e; border-radius: 17px 17px 25px 25px; background: #e7f2e8; }
+.game-shell[data-theme='c'] .player-card .actor-title { color: #426d69; background: #d0e7d8; border-radius: 7px 7px 17px 17px; }
+.game-shell[data-theme='c'] .playing-card { border-radius: 18px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 9px 15px #647a7020; }
+.game-shell[data-theme='c'] .playing-card:before { border: 1px solid #d8ddd0; border-radius: 12px; }
+.game-shell[data-theme='c'] .playing-card.skill { --card-accent: #e7c887; }
+.game-shell[data-theme='c'] .playing-card.spell { --card-accent: #a9d0c4; }
+.game-shell[data-theme='c'] .playing-card.equipment { --card-accent: #aac7d0; }
+.game-shell[data-theme='c'] .playing-card.rune { --card-accent: #d6b7ad; }
+.game-shell[data-theme='c'] .card-type { border-radius: 10px; color: #40545b; }
+.game-shell[data-theme='c'] .energy-cost { border-color: #667771; background: #f3ce83; box-shadow: 0 2px 0 #667771; }
+.game-shell[data-theme='c'] .intent { border-radius: 14px; background: #fff7ea; }
+.game-shell[data-theme='c'] .gear-slot { border-radius: 14px; border-color: #9ab8aa; background: #e8f1e780; }
+.game-shell[data-theme='c'] .hp-bar { display: grid; place-items: center; border-radius: 999px; background: #e6ddd0; border: 1.5px solid #64736e; }
+.game-shell[data-theme='c'] .hp-bar > span { border-radius: inherit; background: #e9a398; }
+.game-shell[data-theme='c'] .player-card .hp-bar > span { background: #9fc8a6; }
+.game-shell[data-theme='c'] .hp-bar b { display: block; text-align: center; line-height: 1; font-size: 11px; font-weight: 800; }
+.game-shell[data-theme='c'] .status-pips > span { border-radius: 999px; padding: 3px 6px; }
+.game-shell[data-theme='c'] .paper-modal,
+.game-shell[data-theme='c'] .settings-panel { border-radius: 24px; background: #f6f4e9; }
+.game-shell[data-theme='c'] .target-instructions { align-self: center; justify-self: center; width: fit-content; max-width: 100%; min-height: 30px; height: auto; padding: 5px 15px; border: 1px solid #9bb8ae; border-radius: 999px; background: #f8fbf2e8; color: #506c68; font-size: 13px; font-weight: 650; line-height: 18px; box-shadow: 0 2px 0 #728b7b30; }
+.game-shell[data-theme='c'] .target-instructions.has-selection { color: #356b62; background: #ecf6e9; border-color: #7aa99b; }
+.game-shell[data-theme='c'] .target-instructions button { color: #356b62; font-weight: 800; font-size: 12px; }
+
+/* Hero abilities and shared buffs occupy compact, readable fixed areas. */
+.hero-abilities { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; max-width: 190px; margin: 5px auto 0; }
+.ability-button { min-height: 30px; padding: 5px 9px; border: 1.5px solid #87978b; border-radius: 999px; background: #fbf5e6; color: var(--ink); font-size: 10px; line-height: 1.1; font-weight: 800; box-shadow: 0 2px 0 #77877945; }
+.ability-button:hover:not(:disabled) { transform: translateY(-1px); }
+.ability-button:disabled { opacity: .55; }
+.passive-skill { max-width: 190px; margin: 4px auto 0; padding: 4px 8px; border-radius: 10px; color: var(--forest-dark); background: #dcebd9; text-align: center; font-size: 10px; line-height: 1.25; }
+.global-buffs { display: flex; align-items: center; justify-content: center; gap: 5px; flex-wrap: wrap; max-width: 210px; margin: 5px auto; }
+.buff-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 25px; min-height: 25px; padding: 3px 7px; border: 1px solid #91a99d; border-radius: 999px; background: #f6f5e7; color: #436e69; font-size: 11px; font-weight: 850; line-height: 1; }
+.ability-overlay { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: #30494670; }
+.ability-overlay > * { max-width: min(440px, 100%); }
+.passive-flash { position: fixed; z-index: 90; left: 50%; top: 18%; transform: translateX(-50%); max-width: calc(100vw - 28px); padding: 9px 16px; border: 1px solid #8fae9f; border-radius: 999px; background: #fff9e9f2; color: #416f68; box-shadow: 0 4px 15px #344e4630; text-align: center; font-size: 13px; font-weight: 800; pointer-events: none; }
+@media (max-width: 720px) {
+  .hero-abilities { max-width: 150px; gap: 4px; }
+  .ability-button { min-height: 27px; padding: 4px 7px; font-size: 9px; }
+  .passive-skill { max-width: 155px; font-size: 9px; }
+  .global-buffs { max-width: 170px; }
+  .passive-flash { top: 12%; font-size: 12px; }
+  .game-shell[data-theme='c'] .target-instructions { max-width: calc(100vw - 28px); border-radius: 14px; padding: 4px 9px; font-size: 11px; line-height: 14px; }
+}
+
+/* Readability and fixed, reserved interaction rows across every theme. */
+:root { --font: 'Segoe UI', Arial, sans-serif; font-size: 17px; }
+.game-shell { overflow: clip; }
+.game-header, .screen-stage { min-width: 0; }
+.game-shell[data-theme='c'] { --display: 'Segoe UI', Arial, sans-serif; }
+button, .playing-card, .gear-slot, .intent, .paper-modal, .hero-choice { border-radius: 16px; }
+.screen-title p, .camp-instructions, .small-hint, .lesson-card p, .tutorial-heading > p, .settings-hint { font-size: 16px; line-height: 1.45; }
+.card-description { font-size: 14px; line-height: 1.3; }
+.hp-bar { display: grid; place-items: center; }
+.hp-bar b { position: absolute; inset: 0; display: grid; place-items: center; font: 800 13px/1 var(--font); }
+.status-count { position: absolute; inset: 0; width: 100%; height: 100%; display: grid; place-items: center; border: 0; border-radius: inherit; background: transparent; color: #fff; font: 800 13px/1 var(--font); text-shadow: 0 1px 3px #000, 1px 0 2px #000; }
+.status-icon svg { opacity: .7; }
+.encounter-heading .global-buffs { position: absolute; left: 0; top: 0; max-width: 310px; justify-content: flex-start; margin: 0; font-size: 12px; }
+.global-buffs { min-height: 28px; max-width: none; }
+.buff-icon { gap: 5px; font-size: 12px; }
+.hero-abilities { width: 170px; display: flex; flex-direction: column; gap: 6px; margin: 8px 0 0; }
+.ability-button { display: grid; grid-template-columns: 22px 1fr; width: 100%; border-radius: 14px; padding: 8px; font-size: 14px; text-align: left; }
+.ability-button > span { grid-row: span 2; font-size: 24px; }
+.ability-button small { font-size: 11px; }
+.passive-skill { position: static; transform: none; margin: 0; padding: 5px 8px; display: flex; flex-direction: column; width: 100%; font-size: 12px; }
+.passive-flash { box-shadow: 0 0 0 3px var(--ochre); animation: passive-pulse 1s ease-out; }
+@keyframes passive-pulse { 30% { background: #ffe299; transform: scale(1.07); } }
+.passive-tag { display: none; }
+.ability-overlay { pointer-events: none; display: flex; flex-direction: column; justify-content: center; gap: 12px; background: radial-gradient(ellipse, #fbd78077, #15393644); animation: ability-burst 1.1s ease-out both; }
+.ability-overlay > span { font-size: 100px; color: #fff0b6; text-shadow: 0 0 30px #efad44; }
+.ability-overlay strong { font: 900 40px var(--display); color: white; text-shadow: 0 3px 0 #35493c; }
+@keyframes ability-burst { 0% { opacity: 0; transform: scale(.8); } 20%,60% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+.game-shell.is-battle .target-instructions { z-index: 8; height: auto; min-height: 42px; padding: 5px 12px; align-self: stretch; width: 100%; max-width: none; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px; font-size: 15px; line-height: 19px; border-radius: 12px; background: var(--paper-light); color: var(--ink); }
+.target-instructions button, .target-instructions .battle-tips, .target-instructions .battle-tips .tip-copy > b { font-size: 14px; line-height: 19px; }
+.is-battle .battle-footer { font-size: 13px; min-height: 30px; padding: 3px 0; }
+.battle-footer .pause-control { font: 800 22px var(--font); padding: 1px 12px; }
+.upgrade-locked { filter: grayscale(1); opacity: .42; transform: none !important; }
+.next-action { outline: 4px solid var(--ochre); outline-offset: 5px; }
+.boon-choices { max-width: 960px; margin: 18px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.boon-choices h2, .boon-choices > p { width: 100%; text-align: center; }
+.boon-choices > p { font-size: 16px; }
+.boon-choices button { width: 210px; background: var(--paper-light); border: var(--border); border-radius: 18px; padding: 14px; text-align: left; }
+.boon-choices button span { display: block; font-size: 14px; line-height: 1.4; margin-top: 8px; }
+.boon-choices button:disabled { opacity: .45; filter: grayscale(1); }
+@media (min-width: 721px) {
+ .game-shell.is-battle { --actor-h: clamp(160px, calc(25vh - 20px), 200px); --hand-h: clamp(152px, calc(20vh + 8px), 184px); --hand-w: 142px; }
+ .game-shell.is-battle .battle-board { grid-template-rows: 44px calc(var(--actor-h) + 36px) var(--actor-h) 46px minmax(0,1fr) 30px; }
+ .is-battle .hand { padding-top: 12px; padding-bottom: 8px; gap: 16px; }
+ .is-battle .hand .card-description { font-size: 14px; line-height: 1.22; }
+ .is-battle .hand .card-art { height: 26px; }
+ .is-battle .hand .card-name { font: 800 14px/1.15 var(--font); }
+ .is-battle .hand .card-type { font-size: 9px; padding: 2px; margin-bottom: 4px; }
+ .is-battle .hand .rune-seal { font-size: 10px; }
+ .is-battle .hand .card-footer { display: none; }
+}
+@media (min-width: 1100px) and (min-height: 950px) {
+ .game-shell.is-battle { --actor-w: 196px; --actor-h: 236px; --hand-h: 204px; --hand-w: 166px; }
+ .game-shell.is-battle .battle-board { grid-template-rows: 52px minmax(272px,1fr) 236px 46px 236px 30px; }
+ .is-battle .hand .card-art { height: 55px; }
+ .is-battle .hand .card-description { font-size: 16px; }
+}
+@media (max-width: 720px) {
+ .game-shell.is-battle .battle-board, .game-shell.is-battle .battle-board:has(.battle-tips) { grid-template-rows: 54px calc(var(--actor-h) + 28px) calc(var(--actor-h) + 46px) 64px minmax(0,1fr) 30px; }
+ .encounter-heading .global-buffs { top: 28px; max-width: 100%; font-size: 11px; }
+ .buff-icon { min-height: 22px; font-size: 11px; padding: 3px 5px; }
+ .buff-icon > span { display: none; }
+ .hero-abilities { width: 82px; gap: 4px; }
+ .ability-button { display: flex; flex-direction: column; padding: 4px; align-items: center; font-size: 11px; text-align: center; }
+ .ability-button > span { font-size: 17px; }
+ .ability-button small { font-size: 10px; }
+ .passive-skill { font-size: 10px; padding: 4px; }
+ .game-shell.is-battle .target-instructions, .target-instructions .battle-tips { font-size: 13px; line-height: 17px; }
+ .is-battle .hand .card-description { font-size: 13px; line-height: 1.2; }
+ .is-battle .hand .card-art { height: 20px; }
+ .is-battle .battle-footer { font-size: 11px; }
+ .lesson-card p, .screen-title p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .ability-overlay, .passive-flash { animation: none; } }
+
+.is-battle .energy-station .energy-bar { height: auto; gap: 2px; }
+.is-battle .energy-station .energy-track { height: 22px; }
+.is-battle .energy-station .energy-heading { min-height: 24px; }
+.is-battle .energy-station .energy-refill { font-size: 11px; margin: 1px 0; }
+.ability-button small { grid-column: 2; font-size: 11px; }
+.is-battle .hero-abilities { margin-top: 5px; gap: 4px; }
+.is-battle .ability-button { padding: 5px 8px; min-height: 42px; }
+.is-battle .passive-skill { line-height: 1.15; font-size: 11px; }
+.is-battle .hand .playing-card:hover, .is-battle .hand .playing-card.selected { transform: translateY(-3px) rotate(0); }
+@media (max-width: 1100px) { .encounter-heading .buff-icon > span { display: none; } }
+
+.is-battle .energy-station .energy-bar { height: 22px; }
+.is-battle .energy-meter { width: 100%; }
+
+@media (max-width:720px) { .passive-skill small { display: none; } .is-battle .ability-button { min-height: 0; } .ability-button small { font-size: 10px; line-height: 12px; } .energy-refill { line-height: 12px; } .is-battle .energy-heading .energy-value { font-size: 20px; line-height: 24px; } .is-battle .energy-heading { line-height: 20px; } }
+
+@media (max-width:720px) {
+ .is-battle .energy-heading { height: 24px; min-height: 24px; }
+ .is-battle .energy-heading .energy-value { font-size: 20px; line-height: 24px; }
+ .is-battle .ability-button { gap: 0; }
+ .is-battle .ability-button > span { line-height: 18px; }
+ .is-battle .ability-button b { font-size: 11px; line-height: 12px; }
+ .is-battle .ability-button small { font-size: 9px; line-height: 11px; white-space: nowrap; }
+ .is-battle .passive-skill b { font-size: 10px; line-height: 11px; }
+}
+@media (min-width:721px) { .is-battle .hand .playing-card:not(.dragging) { transform: none; } }
+
+.camp-controls { position: sticky; top: 8px; z-index: 12; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px; padding: 14px; margin: 10px auto; background: var(--paper); border-radius: 18px; max-width: 620px; }
+
+.is-battle .intent { font-size: 13px; }
+.is-battle .gear-slot b { font-size: 13px; }
+.is-battle .gear-slot small { font-size: 10px; }
+.is-battle .turn-station > span, .is-battle .turn-station .text-button { font-size: 13px; }
+.game-shell.is-battle .hp-bar b { font-size: 13px; }
+.is-battle .energy-heading > b { font-size: 12px; }
+@media (max-width:720px) {
+ .is-battle .intent { font-size: 11px; }
+ .is-battle .gear-slot b { font-size: 11px; }
+ .is-battle .gear-slot small { font-size: 9px; }
+ .is-battle .turn-station .text-button { font-size: 11px; }
+ .is-battle .energy-heading > b { font-size: 10px; }
+}

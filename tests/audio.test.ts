@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AudioController, normalizeAudioSettings } from '../src/audio';
 
 class Parameter {
+  cancelScheduledValues = vi.fn();
   setTargetAtTime = vi.fn();
   setValueAtTime = vi.fn();
   linearRampToValueAtTime = vi.fn();
@@ -70,6 +71,23 @@ describe('audio preferences and lifecycle', () => {
     expect(controller.getDebugState().musicRunning).toBe(true);
     controller.dispose();
     expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('switches music scenes and schedules their distinct note patterns', async () => {
+    controller.setScene('battle');
+    expect(controller.getDebugState().scene).toBe('battle');
+    await controller.unlock();
+    const context = FakeContext.instances[0];
+    const battleNotes = context.oscillators.map(oscillator => oscillator.frequency.setValueAtTime.mock.calls[0]?.[0]);
+    expect(battleNotes.some(note => Math.abs((note ?? 0) - 440 * Math.pow(2, (64 - 69) / 12)) < 0.01)).toBe(true);
+
+    controller.setScene('danger');
+    expect(controller.getDebugState().scene).toBe('danger');
+    context.currentTime = 4;
+    vi.advanceTimersByTime(100);
+    const dangerNotes = context.oscillators.slice(battleNotes.length).map(oscillator => oscillator.frequency.setValueAtTime.mock.calls[0]?.[0]);
+    expect(dangerNotes.some(note => Math.abs((note ?? 0) - 440 * Math.pow(2, (57 - 69) / 12)) < 0.01)).toBe(true);
+    expect(vi.getTimerCount()).toBe(1);
   });
 
   it('persists preferences, applies separate gains, and silences music without silencing effects', async () => {
