@@ -31,3 +31,12 @@ test('reduced motion keeps the world playable and suppresses combat motion',asyn
 test('dragged cards stay visible above the world outside the hand and equip on drop',async({page})=>{
  await fixture(page);const gear=page.locator('.hand [data-card-id="flame-sword"]');await gear.hover();await page.waitForTimeout(160);const a=await gear.boundingBox(),hero=await page.locator('.player-card').boundingBox();await page.mouse.move(a!.x+a!.width/2,a!.y+a!.height/2);await page.mouse.down();await page.mouse.move(hero!.x+hero!.width/2,hero!.y+hero!.height/2,{steps:8});await expect(page.locator('.drag-preview')).toBeVisible();const drag=await page.locator('.drag-preview').boundingBox(),hand=await page.locator('.hand').boundingBox();expect(drag!.y+drag!.height).toBeLessThan(hand!.y);await page.mouse.up();await expect(page.locator('.drag-preview')).toHaveCount(0);await expect(page.locator('.gear-slot').first()).toContainText('Fire Sword');
 });
+
+test('Energy and End Turn share the hand decision zone on laptop, tablet and phone',async({page})=>{
+ await fixture(page,1);
+ for(const [width,height] of [[1366,768],[1024,768],[844,390],[932,430],[667,375],[640,360]]){
+  await page.setViewportSize({width,height});await page.waitForTimeout(180);
+  const layout=await page.evaluate(()=>{const rect=(s:string)=>document.querySelector(s)!.getBoundingClientRect();const e=rect('.energy-meter'),h=rect('.hand'),t=rect('.end-turn-button'),bar=rect('.energy-bar');return {energyNear:Math.abs(e.y+e.height/2-h.y-h.height/2)<h.height/2,turnNear:Math.abs(t.y+t.height/2-h.y-h.height/2)<h.height/2,energyLeft:e.right<=h.x+3,turnRight:t.x>=h.right-3,barFits:bar.right<=e.right,turnFits:t.right<=innerWidth,scroll:document.documentElement.scrollHeight<=innerHeight+1};});
+  expect(Object.values(layout).every(Boolean),JSON.stringify({width,height,...layout})).toBe(true);
+ }
+});

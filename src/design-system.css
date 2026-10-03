@@ -1,0 +1,31 @@
+/* Cartoon Quest: one material vocabulary across the entire game. */
+.game-shell[data-theme='c'] {
+ --ink:#302d42;--paper:#fff3d8;--paper-shade:#ecd5b4;--gold:#efbc62;--gold-light:#ffe1a0;--jade:#477f78;--jade-light:#b4d5bb;--berry:#995b69;--violet:#8173a5;
+ --frame-common:#8c715d;--frame-rare:#4e8899;--frame-epic:#9473a7;
+ --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;
+ --stroke:3px;--corner:12px;--card-corner:16px;--panel-corner:18px;
+ --edge-shadow:0 4px 0 var(--ink);--panel-shadow:0 5px 0 #302d4270,0 12px 24px #1b263a30;
+ --control-fill:var(--paper);--control-ink:var(--ink);--control-edge:var(--ink);
+ --font:Nunito,sans-serif;--display:Nunito,sans-serif;
+}
+.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button,.reward-screen button:not(.playing-card),.camp-screen button:not(.playing-card)) {
+ color:var(--control-ink);background:var(--control-fill);border:var(--stroke) solid var(--control-edge);border-radius:var(--corner);box-shadow:var(--edge-shadow),inset 0 2px 0 #ffffff80;clip-path:none;font-family:var(--font);font-weight:900;letter-spacing:0;text-decoration:none;transition:filter 120ms,box-shadow 120ms,translate 120ms;
+}
+.game-shell[data-theme='c'] :where(.primary-button,.end-turn-button) {--control-fill:var(--gold);--control-ink:var(--ink);}
+.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button):hover:not(:disabled) {filter:brightness(1.08);translate:0 -2px;}
+.game-shell[data-theme='c'] :where(.primary-button,.secondary-button,.quiet-button,.text-button,.side-actions button,.selection-actions button,.end-turn-button,.ability-button,.modal-backdrop button):active:not(:disabled) {translate:0 3px;box-shadow:0 1px 0 var(--ink);}
+.game-shell[data-theme='c'] button:focus-visible {outline:3px solid var(--gold-light);outline-offset:4px;}
+.game-shell[data-theme='c'] button:disabled {filter:saturate(.45);opacity:.65;}
+.game-shell[data-theme='c'] :where(.settings-panel,.tutorial-modal,.deck-modal,.pause-modal,.lesson-card,.camp-panel) {background:var(--paper);color:var(--ink);border:var(--stroke) solid var(--ink);border-radius:var(--panel-corner);box-shadow:var(--panel-shadow);}
+.game-shell[data-theme='c'] :where(.playing-card,.actor-card) {border-radius:var(--card-corner);background:var(--paper);color:var(--ink);}
+
+/* The title screen presents the same physical hero cards as the battle. */
+.game-shell[data-theme='c'] .menu-screen {background:linear-gradient(135deg,#f5ebd3,#c7d9bd 70%,#8db4a1);}
+.game-shell[data-theme='c'] .menu-hero,.game-shell[data-theme='c'] .menu-mage {background:var(--paper);border:6px solid var(--ink);border-radius:22px;box-shadow:0 8px 0 var(--ink),0 20px 30px #302d4233;padding:34px 8px 28px;overflow:hidden;}
+.game-shell[data-theme='c'] .menu-hero:before,.game-shell[data-theme='c'] .menu-mage:before {content:'WARRIOR';position:absolute;top:7px;left:0;width:100%;text-align:center;font-size:20px;font-weight:1000;color:var(--ink);}
+.game-shell[data-theme='c'] .menu-mage:before {content:'MAGE';}
+.game-shell[data-theme='c'] .menu-hero:after,.game-shell[data-theme='c'] .menu-mage:after {content:'THE DEFENDER';position:absolute;bottom:5px;left:0;width:100%;text-align:center;font-size:12px;font-weight:900;color:var(--jade);letter-spacing:1px;}
+.game-shell[data-theme='c'] .menu-mage:after {content:'THE WIZARD';}
+.game-shell[data-theme='c'] .menu-hero svg,.game-shell[data-theme='c'] .menu-mage svg {border-radius:10px;border:2px solid var(--ink);}
+.game-shell[data-theme='c'] .hero-choice {border:4px solid var(--ink);border-radius:var(--panel-corner);background:var(--paper);box-shadow:var(--panel-shadow);}
+.game-shell[data-theme='c'] .hero-choice>.cartoon-portrait {border-block:2px solid var(--ink);background:#a9bea6;}
