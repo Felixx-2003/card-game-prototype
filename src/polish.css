@@ -37,21 +37,21 @@
 .playing-card.epic .rarity-motif { clip-path: polygon(8% 0,92% 0,100% 50%,92% 100%,8% 100%,0 50%); }
 
 /* Replacement C: luminous, illustrated anime fantasy, warm ivory and deep jade. */
-.game-shell[data-theme='c'] { --ink: #243c43; --ink-soft: #536c70; --paper: #f5eddd; --paper-light: #fffaf0; --forest: #28776e; --forest-dark: #185d58; --moss: #97b88b; --ochre: #e6ae4c; --coral: #c9634e; --teal: #73b6ac; --board: #d0e1cc; --border: 2px solid #4f7169; --card-border: 2px solid #496f65; --shadow: 0 4px 0 #42645b, 0 10px 24px #264b4226; background: radial-gradient(ellipse at 45% 32%, #fff2cc 0%, #deebcd 35%, #abcbbd 75%, #80aaa3 100%); }
-.game-shell[data-theme='c']:before { background: radial-gradient(ellipse at 80% 10%, #fff4bf 0, transparent 30%); opacity: .6; }
-.game-shell[data-theme='c'] .forest-decoration { opacity: .12; }
-.game-shell[data-theme='c'] .game-header { background: #f9f2df; border-bottom: 1px solid #a9b8a3; }
-.game-shell[data-theme='c'] .actor-card { padding: 5px; border: 2px solid #50796f; background: #f9f1dd; border-radius: 15px; box-shadow: 0 4px 0 #42645b, 0 10px 22px #264b4233; overflow: visible; }
-.game-shell[data-theme='c'] .actor-title { background: #f9f1dd; padding: 0 3px; color: #264b43; font-weight: 900; border: 0; border-radius: 9px; }
-.game-shell[data-theme='c'] .enemy-card { border-color: #9e6a49; box-shadow: 0 4px 0 #83543f, 0 10px 22px #58332025; }
-.game-shell[data-theme='c'] .enemy-card .actor-title { color: #8a4a35; background: #fff0d5; }
-.game-shell[data-theme='c'] .playing-card { border-radius: 13px; box-shadow: 0 4px 0 #5c7461, 0 8px 15px #36524422; }
-.game-shell[data-theme='c'] .playing-card.rare { border: 3px double #398d9e; box-shadow: 0 4px 0 #246979, 0 8px 16px #367c7c33; }
-.game-shell[data-theme='c'] .playing-card.epic { border: 3px solid #b77922; box-shadow: 0 4px 0 #8e641e, inset 0 0 0 2px #ffe8ad, 0 5px 18px #bc863e44; }
-.game-shell[data-theme='c'] .playing-card:before { border-radius: 9px; }
-.game-shell[data-theme='c'] .primary-button, .game-shell[data-theme='c'] .end-turn-button { color: #fffaf0; border: 2px solid #235a51; background: linear-gradient(#438f7e,#277060); box-shadow: 0 4px 0 #234b42, inset 0 1px 0 #a1ccb299; border-radius: 14px; }
-.game-shell[data-theme='c'] .end-turn-button { background: linear-gradient(#df9270,#bf654d); border-color: #88442f; box-shadow: 0 4px 0 #88442f; }
-.game-shell[data-theme='c'] .target-instructions { background: #fff7e9; border: 1px solid #b2c3a4; box-shadow: none; }
+.game-shell[data-theme='d'] { --ink: #243c43; --ink-soft: #536c70; --paper: #f5eddd; --paper-light: #fffaf0; --forest: #28776e; --forest-dark: #185d58; --moss: #97b88b; --ochre: #e6ae4c; --coral: #c9634e; --teal: #73b6ac; --board: #d0e1cc; --border: 2px solid #4f7169; --card-border: 2px solid #496f65; --shadow: 0 4px 0 #42645b, 0 10px 24px #264b4226; background: radial-gradient(ellipse at 45% 32%, #fff2cc 0%, #deebcd 35%, #abcbbd 75%, #80aaa3 100%); }
+.game-shell[data-theme='d']:before { background: radial-gradient(ellipse at 80% 10%, #fff4bf 0, transparent 30%); opacity: .6; }
+.game-shell[data-theme='d'] .forest-decoration { opacity: .12; }
+.game-shell[data-theme='d'] .game-header { background: #f9f2df; border-bottom: 1px solid #a9b8a3; }
+.game-shell[data-theme='d'] .actor-card { padding: 5px; border: 2px solid #50796f; background: #f9f1dd; border-radius: 15px; box-shadow: 0 4px 0 #42645b, 0 10px 22px #264b4233; overflow: visible; }
+.game-shell[data-theme='d'] .actor-title { background: #f9f1dd; padding: 0 3px; color: #264b43; font-weight: 900; border: 0; border-radius: 9px; }
+.game-shell[data-theme='d'] .enemy-card { border-color: #9e6a49; box-shadow: 0 4px 0 #83543f, 0 10px 22px #58332025; }
+.game-shell[data-theme='d'] .enemy-card .actor-title { color: #8a4a35; background: #fff0d5; }
+.game-shell[data-theme='d'] .playing-card { border-radius: 13px; box-shadow: 0 4px 0 #5c7461, 0 8px 15px #36524422; }
+.game-shell[data-theme='d'] .playing-card.rare { border: 3px double #398d9e; box-shadow: 0 4px 0 #246979, 0 8px 16px #367c7c33; }
+.game-shell[data-theme='d'] .playing-card.epic { border: 3px solid #b77922; box-shadow: 0 4px 0 #8e641e, inset 0 0 0 2px #ffe8ad, 0 5px 18px #bc863e44; }
+.game-shell[data-theme='d'] .playing-card:before { border-radius: 9px; }
+.game-shell[data-theme='d'] .primary-button, .game-shell[data-theme='d'] .end-turn-button { color: #fffaf0; border: 2px solid #235a51; background: linear-gradient(#438f7e,#277060); box-shadow: 0 4px 0 #234b42, inset 0 1px 0 #a1ccb299; border-radius: 14px; }
+.game-shell[data-theme='d'] .end-turn-button { background: linear-gradient(#df9270,#bf654d); border-color: #88442f; box-shadow: 0 4px 0 #88442f; }
+.game-shell[data-theme='d'] .target-instructions { background: #fff7e9; border: 1px solid #b2c3a4; box-shadow: none; }
 .illustrated-portrait, .illustrated-card-art { display: block; background-image: none; background-repeat: no-repeat; background-size: 400% 400%; border-radius: 9px; }
 .illustrated-portrait { aspect-ratio: 1; width: 100%; }
 .is-battle .actor-card > .illustrated-portrait { width: 100%; flex: 1; min-height: 0; margin: 3px 0; }
@@ -61,7 +61,7 @@
 .ending-art > .illustrated-portrait { height: 250px; }
 .lesson-art > .illustrated-portrait { width: 110px; height: 110px; }
 .lesson-art > .illustrated-card-art { width: 140px; height: 110px; }
-.game-shell[data-theme='c'] .sun-disc { opacity: .25; }
+.game-shell[data-theme='d'] .sun-disc { opacity: .25; }
 
 @media (min-width: 1100px) and (min-height: 950px) {
  .game-shell.is-battle .battle-board { grid-template-rows: 46px 30px 52px minmax(272px,1fr) 236px 236px; }
@@ -79,28 +79,11 @@
  .settings-theme { flex-direction: column; align-items: stretch; gap: 6px; }
 }
 
-.game-shell[data-theme='c'] .playing-card.rare { border-width: 4px; background-image: linear-gradient(145deg, #bde8edaa, transparent 65%); }
-.game-shell[data-theme='c'] .playing-card.epic { border-width: 4px; background-image: linear-gradient(145deg, #ffdc92cc, transparent 65%); }
-.game-shell[data-theme='c'] .playing-card.rare:before { border: 1px solid #76bfc8; }
-.game-shell[data-theme='c'] .playing-card.epic:before { border: 2px double #d6a54c; }
+.game-shell[data-theme='d'] .playing-card.rare { border-width: 4px; background-image: linear-gradient(145deg, #bde8edaa, transparent 65%); }
+.game-shell[data-theme='d'] .playing-card.epic { border-width: 4px; background-image: linear-gradient(145deg, #ffdc92cc, transparent 65%); }
+.game-shell[data-theme='d'] .playing-card.rare:before { border: 1px solid #76bfc8; }
+.game-shell[data-theme='d'] .playing-card.epic:before { border: 2px double #d6a54c; }
 
 .game-shell.is-battle .battle-board { grid-template-columns: minmax(0,1fr); }
 .battle-board > * { min-width: 0; }
-@media (max-width:720px) {
- .battle-board:has(.enemy-wrap:nth-child(3)) { --actor-w: 96px; --hand-w: 94px; --hand-h: 168px; }
- .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) .enemy-row { gap: 34px; }
- .battle-board:has(.enemy-wrap:nth-child(3)) .enemy-wrap { width: var(--actor-w); flex: 0 0 var(--actor-w); }
- .battle-board:has(.enemy-wrap:nth-child(3)) .intent { min-width: 0; width: var(--actor-w); padding: 2px; font-size: 10px; line-height: 11px; white-space: normal; }
- .battle-board:has(.enemy-wrap:nth-child(3)) .actor-title { font-size: 10px; white-space: normal; line-height: 14px; }
- .battle-board:has(.enemy-wrap:nth-child(3)) .hand .playing-card { width: var(--hand-w); flex-basis: var(--hand-w); }
- .battle-board:has(.enemy-wrap:nth-child(3)) .hand .card-name { white-space: normal; font-size: 12px; line-height: 13px; }
- .battle-board:has(.enemy-wrap:nth-child(3)) .hero-and-gear { gap: 32px; }
-}
-
-@media (max-width:720px) {
- .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) { grid-template-rows: 64px 30px 54px calc(var(--actor-h) + 36px) calc(var(--actor-h) + 46px) minmax(0,1fr); }
- .battle-board:has(.enemy-wrap:nth-child(3)) .intent { height: 30px; margin-bottom: 4px; }
- .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) .hand { padding-bottom: 10px; }
-}
-
 .game-shell.is-battle .hand .playing-card.rune .card-art, .game-shell.is-battle .hand .playing-card:has(.rune-seal) .card-art { height: 18px; }

@@ -328,7 +328,7 @@ button { touch-action: manipulation; }
 }
 
 /* Theme C: soft, rounded anime-fantasy palette with a clean system sans. */
-.game-shell[data-theme='c'] {
+.game-shell[data-theme='d'] {
   --ink: #3e4d5b; --ink-soft: #687985; --paper: #f1e8dc; --paper-light: #fffaf3;
   --forest: #558c86; --forest-dark: #396b6b; --moss: #a9c6a3; --ochre: #e8bd75;
   --coral: #dc8e84; --teal: #81b5b1; --red: #c96f70;
@@ -340,37 +340,37 @@ button { touch-action: manipulation; }
   background: radial-gradient(ellipse at 50% 43%, #f6f4e9 0%, #dce9e2 58%, #bed5d0 100%);
 }
 :root { --font: 'Segoe UI', 'Trebuchet MS', sans-serif; }
-.game-shell[data-theme='c']:before { opacity: .22; background: radial-gradient(ellipse, #fff9 0 1px, transparent 2px); background-size: 28px 28px; }
-.game-shell[data-theme='c'] .forest-decoration { opacity: .1; background: #7eaaa0; }
-.game-shell[data-theme='c'] .game-header { background: #f9fbf080; border-bottom-color: #829f9928; }
-.game-shell[data-theme='c'] .primary-button,
-.game-shell[data-theme='c'] .secondary-button,
-.game-shell[data-theme='c'] .end-turn-button { border-radius: 18px; box-shadow: 0 4px 0 #748982, inset 0 2px 0 #ffffff70; }
-.game-shell[data-theme='c'] .actor-card { border-width: 3px; border-radius: 24px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 10px 20px #647a7020; }
-.game-shell[data-theme='c'] .enemy-card { border-color: #a66e68; border-radius: 25px 25px 17px 17px; background: #fae7dc; }
-.game-shell[data-theme='c'] .enemy-card .actor-title { color: #855b5b; background: #f3d5c9; border-radius: 17px 17px 7px 7px; }
-.game-shell[data-theme='c'] .player-card { border-color: #56847e; border-radius: 17px 17px 25px 25px; background: #e7f2e8; }
-.game-shell[data-theme='c'] .player-card .actor-title { color: #426d69; background: #d0e7d8; border-radius: 7px 7px 17px 17px; }
-.game-shell[data-theme='c'] .playing-card { border-radius: 18px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 9px 15px #647a7020; }
-.game-shell[data-theme='c'] .playing-card:before { border: 1px solid #d8ddd0; border-radius: 12px; }
-.game-shell[data-theme='c'] .playing-card.skill { --card-accent: #e7c887; }
-.game-shell[data-theme='c'] .playing-card.spell { --card-accent: #a9d0c4; }
-.game-shell[data-theme='c'] .playing-card.equipment { --card-accent: #aac7d0; }
-.game-shell[data-theme='c'] .playing-card.rune { --card-accent: #d6b7ad; }
-.game-shell[data-theme='c'] .card-type { border-radius: 10px; color: #40545b; }
-.game-shell[data-theme='c'] .energy-cost { border-color: #667771; background: #f3ce83; box-shadow: 0 2px 0 #667771; }
-.game-shell[data-theme='c'] .intent { border-radius: 14px; background: #fff7ea; }
-.game-shell[data-theme='c'] .gear-slot { border-radius: 14px; border-color: #9ab8aa; background: #e8f1e780; }
-.game-shell[data-theme='c'] .hp-bar { display: grid; place-items: center; border-radius: 999px; background: #e6ddd0; border: 1.5px solid #64736e; }
-.game-shell[data-theme='c'] .hp-bar > span { border-radius: inherit; background: #e9a398; }
-.game-shell[data-theme='c'] .player-card .hp-bar > span { background: #9fc8a6; }
-.game-shell[data-theme='c'] .hp-bar b { display: block; text-align: center; line-height: 1; font-size: 11px; font-weight: 800; }
-.game-shell[data-theme='c'] .status-pips > span { border-radius: 999px; padding: 3px 6px; }
-.game-shell[data-theme='c'] .paper-modal,
-.game-shell[data-theme='c'] .settings-panel { border-radius: 24px; background: #f6f4e9; }
-.game-shell[data-theme='c'] .target-instructions { align-self: center; justify-self: center; width: fit-content; max-width: 100%; min-height: 30px; height: auto; padding: 5px 15px; border: 1px solid #9bb8ae; border-radius: 999px; background: #f8fbf2e8; color: #506c68; font-size: 13px; font-weight: 650; line-height: 18px; box-shadow: 0 2px 0 #728b7b30; }
-.game-shell[data-theme='c'] .target-instructions.has-selection { color: #356b62; background: #ecf6e9; border-color: #7aa99b; }
-.game-shell[data-theme='c'] .target-instructions button { color: #356b62; font-weight: 800; font-size: 12px; }
+.game-shell[data-theme='d']:before { opacity: .22; background: radial-gradient(ellipse, #fff9 0 1px, transparent 2px); background-size: 28px 28px; }
+.game-shell[data-theme='d'] .forest-decoration { opacity: .1; background: #7eaaa0; }
+.game-shell[data-theme='d'] .game-header { background: #f9fbf080; border-bottom-color: #829f9928; }
+.game-shell[data-theme='d'] .primary-button,
+.game-shell[data-theme='d'] .secondary-button,
+.game-shell[data-theme='d'] .end-turn-button { border-radius: 18px; box-shadow: 0 4px 0 #748982, inset 0 2px 0 #ffffff70; }
+.game-shell[data-theme='d'] .actor-card { border-width: 3px; border-radius: 24px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 10px 20px #647a7020; }
+.game-shell[data-theme='d'] .enemy-card { border-color: #a66e68; border-radius: 25px 25px 17px 17px; background: #fae7dc; }
+.game-shell[data-theme='d'] .enemy-card .actor-title { color: #855b5b; background: #f3d5c9; border-radius: 17px 17px 7px 7px; }
+.game-shell[data-theme='d'] .player-card { border-color: #56847e; border-radius: 17px 17px 25px 25px; background: #e7f2e8; }
+.game-shell[data-theme='d'] .player-card .actor-title { color: #426d69; background: #d0e7d8; border-radius: 7px 7px 17px 17px; }
+.game-shell[data-theme='d'] .playing-card { border-radius: 18px; background: #fffaf3; box-shadow: 0 4px 0 #87998e, 0 9px 15px #647a7020; }
+.game-shell[data-theme='d'] .playing-card:before { border: 1px solid #d8ddd0; border-radius: 12px; }
+.game-shell[data-theme='d'] .playing-card.skill { --card-accent: #e7c887; }
+.game-shell[data-theme='d'] .playing-card.spell { --card-accent: #a9d0c4; }
+.game-shell[data-theme='d'] .playing-card.equipment { --card-accent: #aac7d0; }
+.game-shell[data-theme='d'] .playing-card.rune { --card-accent: #d6b7ad; }
+.game-shell[data-theme='d'] .card-type { border-radius: 10px; color: #40545b; }
+.game-shell[data-theme='d'] .energy-cost { border-color: #667771; background: #f3ce83; box-shadow: 0 2px 0 #667771; }
+.game-shell[data-theme='d'] .intent { border-radius: 14px; background: #fff7ea; }
+.game-shell[data-theme='d'] .gear-slot { border-radius: 14px; border-color: #9ab8aa; background: #e8f1e780; }
+.game-shell[data-theme='d'] .hp-bar { display: grid; place-items: center; border-radius: 999px; background: #e6ddd0; border: 1.5px solid #64736e; }
+.game-shell[data-theme='d'] .hp-bar > span { border-radius: inherit; background: #e9a398; }
+.game-shell[data-theme='d'] .player-card .hp-bar > span { background: #9fc8a6; }
+.game-shell[data-theme='d'] .hp-bar b { display: block; text-align: center; line-height: 1; font-size: 11px; font-weight: 800; }
+.game-shell[data-theme='d'] .status-pips > span { border-radius: 999px; padding: 3px 6px; }
+.game-shell[data-theme='d'] .paper-modal,
+.game-shell[data-theme='d'] .settings-panel { border-radius: 24px; background: #f6f4e9; }
+.game-shell[data-theme='d'] .target-instructions { align-self: center; justify-self: center; width: fit-content; max-width: 100%; min-height: 30px; height: auto; padding: 5px 15px; border: 1px solid #9bb8ae; border-radius: 999px; background: #f8fbf2e8; color: #506c68; font-size: 13px; font-weight: 650; line-height: 18px; box-shadow: 0 2px 0 #728b7b30; }
+.game-shell[data-theme='d'] .target-instructions.has-selection { color: #356b62; background: #ecf6e9; border-color: #7aa99b; }
+.game-shell[data-theme='d'] .target-instructions button { color: #356b62; font-weight: 800; font-size: 12px; }
 
 /* Hero abilities and shared buffs occupy compact, readable fixed areas. */
 .hero-abilities { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; max-width: 190px; margin: 5px auto 0; }
@@ -389,14 +389,14 @@ button { touch-action: manipulation; }
   .passive-skill { max-width: 155px; font-size: 9px; }
   .global-buffs { max-width: 170px; }
   .passive-flash { top: 12%; font-size: 12px; }
-  .game-shell[data-theme='c'] .target-instructions { max-width: calc(100vw - 28px); border-radius: 14px; padding: 4px 9px; font-size: 11px; line-height: 14px; }
+  .game-shell[data-theme='d'] .target-instructions { max-width: calc(100vw - 28px); border-radius: 14px; padding: 4px 9px; font-size: 11px; line-height: 14px; }
 }
 
 /* Readability and fixed, reserved interaction rows across every theme. */
 :root { --font: 'Segoe UI', Arial, sans-serif; font-size: 17px; }
 .game-shell { overflow: clip; }
 .game-header, .screen-stage { min-width: 0; }
-.game-shell[data-theme='c'] { --display: 'Segoe UI', Arial, sans-serif; }
+.game-shell[data-theme='d'] { --display: 'Segoe UI', Arial, sans-serif; }
 button, .playing-card, .gear-slot, .intent, .paper-modal, .hero-choice { border-radius: 16px; }
 .screen-title p, .camp-instructions, .small-hint, .lesson-card p, .tutorial-heading > p, .settings-hint { font-size: 16px; line-height: 1.45; }
 .card-description { font-size: 14px; line-height: 1.3; }

@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 const SAVE = 'card-game-prototype-v1';
-test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => localStorage.clear()); await page.reload(); });
+test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => (localStorage.clear(),localStorage.setItem('card-game-prototype-tutorial-v1',JSON.stringify({tutorialCompleted:true})))); await page.reload(); });
 
-test('short visual tutorial covers the game and first-battle tips can be dismissed', async ({ page }) => {
+test('short visual field guide covers the game and supports skip', async ({ page }) => {
   await expect(page.locator('.menu-hook')).toContainText('Runes');
   await page.getByRole('button', { name: /quick field guide/ }).click();
   await expect(page.getByRole('button', { name: 'Close tutorial' })).toBeFocused();
@@ -21,11 +21,7 @@ test('short visual tutorial covers the game and first-battle tips can be dismiss
   await expect(page.getByRole('button', { name: /quick field guide/ })).toBeFocused();
   await page.getByRole('button', { name: /New adventure/ }).click();
   await page.locator('.hero-choice.warrior').click();
-  await expect(page.locator('.battle-tips')).toContainText('Intentions');
-  await page.getByRole('button', { name: 'Hide tutorial tips' }).click();
-  await expect(page.locator('.battle-tips')).toHaveCount(0);
-  await page.reload(); await page.getByRole('button', { name: /Continue adventure/ }).click();
-  await expect(page.locator('.battle-tips')).toHaveCount(0);
+  await expect(page.locator('.target-instructions')).toHaveCount(0);
   await page.getByRole('button', { name: 'How to play', exact: true }).click();
   await page.getByRole('button', { name: 'Skip tutorial' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -36,8 +32,9 @@ test('both themes keep a fixed battle screen and consistent card hierarchy', asy
   await page.locator('.hero-choice.warrior').click();
   const original = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), SAVE);
   for (const theme of ['a', 'b', 'c']) {
+    await page.setViewportSize({width:1280,height:720});
     await page.getByLabel('Art theme', { exact: true }).selectOption(theme);
-    for (const [width, height] of [[1280,720], [1366,768], [1280,800], [1920,1080], [390,844]]) {
+    for (const [width, height] of [[1280,720], [1366,768], [1280,800], [1920,1080], [844,390]]) {
       await page.setViewportSize({ width, height });
       await page.waitForTimeout(350);
       const layout = await page.evaluate(() => {
@@ -93,7 +90,7 @@ test('side effect icons expose tooltips, energy gates cards, and free runes can 
   expect(await page.evaluate(key => JSON.parse(localStorage.getItem(key)!).hand.length,SAVE)).toBe(before);
   await page.locator('.hand [data-card-id="rune-cheap"]').click();
   await page.mouse.click(cardBox!.x + 50, cardBox!.y + 50);
-  await expect(fireball.locator('.rune-seal')).toContainText('Feather Rune');
+  await expect(fireball.locator('.rune-seal')).toContainText('Light Rune');
   const guard = await page.locator('.hand [data-card-id="guard"]').boundingBox();
   await page.mouse.click(guard!.x + 45, guard!.y + 45);
   await page.getByRole('button', { name: 'Discard card' }).click();

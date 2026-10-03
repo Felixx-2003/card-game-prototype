@@ -1,5 +1,7 @@
-export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { kind?: string; className?: string; theme?: 'a' | 'b' | 'c' }) {
-  if (theme === 'c') return <IllustratedArt kind={kind} className={className} />;
+import { CartoonPortrait, CartoonCardArt } from './CartoonArt';
+export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { kind?: string; className?: string; theme?: 'a' | 'b' | 'c' | 'd' }) {
+  if (theme === 'c') return <CartoonPortrait kind={kind} className={className}/>;
+  if (theme === 'd') return <IllustratedArt kind={kind} className={className} />;
   if (theme === 'b') return <PolishedPortrait kind={kind} className={className} />;
   const mage = kind === 'mage';
   const boss = /boss|regent|warden|king|colossus/.test(kind);
@@ -23,8 +25,9 @@ export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { ki
   </svg>;
 }
 
-export function CardArt({ type, id, theme = 'a' }: { type: string; id: string; theme?: 'a' | 'b' | 'c' }) {
-  if (theme === 'c') return <IllustratedArt kind={id} type={type} />;
+export function CardArt({ type, id, theme = 'a' }: { type: string; id: string; theme?: 'a' | 'b' | 'c' | 'd' }) {
+  if (theme === 'c') return <CartoonCardArt id={id} type={type}/>;
+  if (theme === 'd') return <IllustratedArt kind={id} type={type} />;
   if (theme === 'b') return <PolishedCardArt type={type} id={id} />;
   const spell = type === 'spell'; const rune = type === 'rune'; const equipment = type === 'equipment';
   const guard = /guard|shield|armor|ward|defend|fortify/.test(id);

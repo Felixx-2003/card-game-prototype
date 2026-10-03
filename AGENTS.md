@@ -1,12 +1,10 @@
 # Card Game Prototype
+Local React/TypeScript/Vite game. No backend or deployment. Push only when explicitly requested. Read GAME_DESIGN.md and UI_STYLE.md. Keep combat pure in engine.ts, content in data.ts, talents/boons in abilities.ts and audio modular.
 
-Local React/TypeScript/Vite game. No backend, pets, shops, accounts, or deployment. GitHub pushes only when explicitly requested.
-Read GAME_DESIGN.md and UI_STYLE.md before changes. Keep combat in pure systems and content in data files.
-Use at most 2–3 independent agents; assign distinct files. Lead integrates and runs build, combat tests, and browser QA.
-Preserve the user's rules. Document small reversible decisions. Keep documentation short.
+Preserve v1 saves, zero-Energy discard, click/drag card and Rune targeting, gear replacement, rewards, camp upgrades and full runs for both heroes. Current UI work does not rebalance mechanics. Simple display names must not change stable IDs.
 
-Polish rules: battles fit one fixed viewport; hero/enemy cards share dimensions and hand cards are smaller. Keep Theme A and B reversible through centralized tokens and original SVG variants. Use reusable StatusIcons/EnergyBar/Tutorial; status rails stay beside cards. Audio is synthesized locally in audio.ts, starts only on gestures, and has independent music/SFX volumes. Fonts are self-hosted with OFL notices. Preserve zero-Energy discard and click/drag Rune targeting. Verify both themes at 1280×720/800 and full runs for both heroes before delivery.
+Keep A/B/D for rollback; C uses original reusable SVGs in CartoonArt.tsx. Use one Nunito family. Final battle CSS is battle.css. One fixed viewport, equal actor sizes, smaller hand, side status rails and controls, no permanent instruction bar. Portrait phones ask to rotate; landscape hand may scroll horizontally.
 
-Character talents and global boon modifiers live in abilities.ts with pure engine actions. Keep v1 saves compatible through optional fields. Upgrade choices must lock immediately, while camp Rune management stays usable. Verify new talents, all three themes, scene music, centered numbers and fixed controls.
+GuidedTutorial must gate unrelated pointer/keyboard actions and highlight one target. Practice restores the real run and saves completion separately. Verify completion, replay and persistence. Audio retains separate menu/battle/reward/boss scenes, gesture unlock, volumes, mute and hidden-tab behavior.
 
-Presentation: one Nunito font family on every screen. C uses the local generated atlas; keep A/B. Final CSS contracts in polish.css. Guidance and former bottom labels stay ABOVE combat, never between hero and hand. Verify modal centers, rarity motifs, long Rune text and three-enemy narrow layouts.
+Lead integrates. Use Luna only for small CSS/responsive/tutorial QA subtasks when delegated. Run build, engine/audio tests and browser regressions. Visually check laptop, tablet, four phone landscapes, three enemies, long Rune text, centered modals and theme rollback.

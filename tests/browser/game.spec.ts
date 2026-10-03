@@ -14,7 +14,7 @@ async function drag(page: Page, source: string, target?: string) {
   await page.mouse.up();
 }
 
-test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => localStorage.clear()); await page.reload(); });
+test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => (localStorage.clear(),localStorage.setItem('card-game-prototype-tutorial-v1',JSON.stringify({tutorialCompleted:true})))); await page.reload(); });
 
 for (const hero of ['warrior', 'mage']) test(`${hero}: complete adventure through rewards, elite, boss and victory`, async ({ page }) => {
   test.setTimeout(120000);
@@ -106,12 +106,12 @@ test('rune drag, gear replacement and status resolution use visible mouse contro
   }, SAVE);
   await page.reload(); await page.getByRole('button', { name: /Continue adventure/ }).click();
   await drag(page, '.hand [data-card-id="rune-fire"]', '.hand [data-card-id="heavy-strike"]');
-  await expect(page.locator('.hand [data-card-id="heavy-strike"] .rune-seal')).toContainText('Ember Rune');
+  await expect(page.locator('.hand [data-card-id="heavy-strike"] .rune-seal')).toContainText('Fire Rune');
   await drag(page, '.hand [data-card-id="iron-armor"]', '.player-card');
   await expect(page.locator('.gear-slot').nth(1)).toContainText('Iron Armor');
   const armor = (await state(page)).gear.armor;
   await drag(page, '.hand [data-card-id="oak-charm"]', '.player-card');
-  await expect(page.locator('.gear-slot').nth(1)).toContainText('Oak Charm');
+  await expect(page.locator('.gear-slot').nth(1)).toContainText('Heal Charm');
   expect((await state(page)).discard).toContain(armor);
   await drag(page, '.hand [data-card-id="heavy-strike"]', '[data-target="enemy-0"]');
   await expect(page.locator('.enemy-wrap').first().getByRole('img', { name: 'Burn, 2 stacks', exact: true })).toBeVisible();
@@ -148,7 +148,7 @@ test('camp supports rune attachment, replacement, removal and readable upgrades'
   const heavy = page.locator('[data-card-id="heavy-strike"]').first();
   await page.locator('[data-card-id="rune-fire"]').first().click();
   await heavy.click();
-  await expect(heavy.locator('.rune-seal')).toContainText('Ember Rune');
+  await expect(heavy.locator('.rune-seal')).toContainText('Fire Rune');
   await heavy.click();
   await expect(heavy.locator('.card-description')).toContainText('19 damage');
   await page.locator('[data-card-id="rune-echo"]').click();

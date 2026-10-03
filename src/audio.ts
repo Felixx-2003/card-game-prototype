@@ -16,7 +16,7 @@ const MUSIC: Record<MusicScene, { melody: number[]; roots: number[]; beat: numbe
   // Broad, rising intervals over a gentle walking bass give the title screen a sense of travel.
   menu: { melody: [69,76,74,72,67,69,72,76,79,76,74,72,69,71,74,79,77,74,72,69,67,72,76,81,79,76,74,71,72,76,79,84], roots: [45,41,48,43], beat: .48, noteLength: .37 },
   // A brisk, square-footed heroic line; low pulses accent alternate beats without sharp transients.
-  battle: { melody: [64,64,71,67,69,72,76,72,67,67,74,71,72,76,79,76,65,65,72,69,71,74,77,74,67,67,74,71,72,76,79,76], roots: [40,43,36,38], beat: .3, noteLength: .22, pulse: 'battle' },
+  battle: { melody: [72,0,79,76,74,72,76,79,81,79,76,72,74,0,76,79,77,0,84,81,79,77,81,84,83,81,79,76,74,0,79,76], roots: [48,53,43,55], beat: .27, noteLength: .18, pulse: 'battle' },
   // Descending minor fragments and a persistent pulse make danger feel tighter and more urgent.
   danger: { melody: [57,60,63,62,57,60,65,63,55,59,62,60,55,59,63,62,53,57,60,58,53,57,62,60], roots: [33,34,29], beat: .34, noteLength: .24, pulse: 'danger' },
   // Open major arpeggios and a rising answer make each reward scene feel like forward progress.
@@ -136,9 +136,9 @@ export class AudioController {
       const baseNote = pattern.melody[index];
       // Three phrase shapes: the written line, a lightly ornamented octave lift with rests,
       // and a lower contour that answers the first phrase.
-      const rest = variation === 1 && index % 11 === 5;
+      const rest = baseNote === 0 || (variation === 1 && index % 11 === 5);
       const octave = variation === 1 && index % 8 >= 5 ? 12 : variation === 2 && index % 8 < 2 ? -12 : 0;
-      if (!rest) this.tone(hz(baseNote + octave), this.nextNote, pattern.noteLength, 'sine', 0.22, this.musicGain, true);
+      if (!rest) this.tone(hz(baseNote + octave), this.nextNote, pattern.noteLength, this.scene === 'battle' ? 'triangle' : 'sine', this.scene === 'battle' ? 0.16 : 0.22, this.musicGain, true);
       if (pattern.pulse && (pattern.pulse === 'danger' || index % 2 === 0)) {
         // A short, soft low sine thump adds meter without a bright or percussive click.
         const root = pattern.roots[(Math.floor(index / 8) + phrase) % pattern.roots.length];

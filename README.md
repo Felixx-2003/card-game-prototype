@@ -15,7 +15,11 @@ Choose Warrior or Mage. Drag cards to glowing targets, or click a card then its 
 
 Progress saves in this browser's localStorage. Main Menu offers continue/new run. The development panel uses the backtick key and is excluded from production builds.
 
-Use **How to play** for a short visual field guide; skip it or dismiss the first-battle tips at any time. **Art theme** switches between A (original handmade), B (painted fantasy), and C (storybook anime) without changing your run. **Settings** includes mute and separate Music/Sound effects sliders. Original generated music starts after your first click and pauses in hidden tabs. Art and audio work locally; all pages use the self-hosted rounded Nunito font. Battles keep Energy, actors, equipment, effects and your hand in one non-scrolling screen. Hover/focus side effect icons for their rules.
+First adventures open a seven-step interactive practice tutorial. Unrelated controls are locked while one target is highlighted. Completion saves locally; the side **Tutorial** button replays practice and restores your real run. **How to play** opens the optional visual field guide.
+
+**Art theme** offers A (handmade), B (cel vectors), C (new original Cartoon Quest vectors), and D (previous illustrated art). All screens use self-hosted Nunito. Battle keeps controls in side rails and actors/hand in the center, without vertical scrolling or a permanent instruction bar. Phones play in landscape; portrait shows a rotate prompt. The hand scrolls horizontally on small displays. Hover/focus side status icons for details.
+
+**Settings** offers mute and separate music/effects sliders. Original scene music starts after a click and pauses in hidden tabs. Battle has a new playful, brisk melody. Art, fonts, saves and audio work locally.
 
 ## Verify
 
@@ -25,8 +29,6 @@ npm.cmd test
 npm.cmd run test:browser
 ```
 
-Browser tests use installed Google Chrome and start Vite automatically if needed. Node.js 22+ is recommended. Tests cover combat/full runs, audio lifecycle, all three visual themes, fixed-screen sizing, onboarding, keyboard focus, Energy/discard, effect tooltips, mute/volume, and real browser music output.
+Browser tests use installed Google Chrome and start Vite automatically if needed. Node.js 22+ is recommended. Tests cover combat/full runs, audio lifecycle, all four visual themes, fixed-screen sizing, onboarding, keyboard focus, Energy/discard, effect tooltips, mute/volume, and real browser music output.
 
 Content lives in `src/data.ts`; pure game rules in `src/engine.ts`; shared models in `src/types.ts`; presentation and theme tokens in UI/CSS; synthesis in `src/audio.ts`. See GAME_DESIGN.md and UI_STYLE.md for decisions. GitHub origin is configured; the game remains a local prototype with no deployment.
-
-Latest: C · Storybook anime replaces the earlier C with original shaded character/effect illustrations. A/B remain available. One rounded Nunito family covers every page and popup. Guidance and former bottom labels stay above combat; settings/tutorial dialogs are centered. Rare/epic cards use distinct frames and ornaments. New original scene music adds a stronger battle pulse. Existing skills, boons, upgrades and saves stay supported.

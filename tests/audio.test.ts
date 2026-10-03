@@ -79,7 +79,7 @@ describe('audio preferences and lifecycle', () => {
     await controller.unlock();
     const context = FakeContext.instances[0];
     const battleNotes = context.oscillators.map(oscillator => oscillator.frequency.setValueAtTime.mock.calls[0]?.[0]);
-    expect(battleNotes.some(note => Math.abs((note ?? 0) - 440 * Math.pow(2, (64 - 69) / 12)) < 0.01)).toBe(true);
+    expect(battleNotes.some(note => Math.abs((note ?? 0) - 440 * Math.pow(2, (72 - 69) / 12)) < 0.01)).toBe(true);
 
     controller.setScene('danger');
     expect(controller.getDebugState().scene).toBe('danger');

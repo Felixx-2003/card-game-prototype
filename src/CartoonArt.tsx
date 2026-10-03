@@ -1,0 +1,29 @@
+/** Original vector cast: shared shapes, clean cel shadows and distinct silhouettes. */
+export function CartoonPortrait({kind,className=''}:{kind:string;className?:string}) {
+ const hero=kind==='warrior'||kind==='mage',mage=kind==='mage';
+ const turtle=kind==='moss-shell',fairy=kind==='bell-sprite',witch=kind==='briar-witch',boss=kind==='hollow-regent',knight=kind==='bramble-knight',guard=kind==='lantern-warden',imp=kind==='ember-imp';
+ const coat=hero?(mage?'#508cce':'#e9b94e'):boss?'#50916b':knight?'#8397a7':witch?'#a981ba':guard?'#57a29e':imp?'#e98a57':'#83bb72';
+ return <svg className={`cartoon-portrait ${className}`} viewBox="0 0 200 180" aria-hidden="true" data-cartoon={kind}>
+  <path d="M18 148Q100 111 184 148V180H18Z" fill="#c9d6a2"/><circle cx="102" cy="81" r="65" fill="#f8de9b"/><ellipse cx="104" cy="167" rx="65" ry="9" fill="#537365" opacity=".22"/>
+  <g stroke="#293e43" strokeWidth="4" strokeLinejoin="round" strokeLinecap="round">
+   {turtle?<><path d="M42 145Q25 153 32 167H61M120 145Q115 161 130 165H150" fill="#a0c684"/><path d="M33 134Q29 72 88 74Q135 76 147 134Z" fill="#488d73"/><path d="M47 132L64 96L96 83L125 102L134 133Z" fill="#79b898"/><path d="M64 96L80 124L125 102M80 124L83 135" fill="none"/><path d="M135 110Q181 92 184 130Q187 157 144 153L127 133Z" fill="#b3cd83"/><path d="M142 143Q170 150 178 140" fill="none"/><ellipse cx="161" cy="120" rx="6" ry="10" fill="#293e43"/><path d="M56 92L64 68L78 79M104 84L118 61L127 92" fill="#98bf6d"/></>:<>
+    {fairy&&<><path d="M74 121Q9 62 36 46Q71 50 85 106M126 121Q188 60 164 47Q131 55 116 108" fill="#fcf0b5"/><path d="M51 70L75 104M151 71L128 105" stroke="#e4b853"/></>}
+    <path d="M57 158L67 118Q100 99 133 118L147 158L124 165H76Z" fill={coat}/><path d="M107 112L128 121L137 153L109 160Z" fill="#293e43" opacity=".17" stroke="none"/>
+    <path d="M74 157L68 173H91L96 158M111 158L115 173H139L128 157" fill="#536570"/>
+    <path d="M67 120L49 136L40 155L61 160L77 132M131 119L151 136L159 157L138 161L122 133" fill={coat}/>
+    <path d="M69 59Q100 30 134 59L130 99Q117 122 98 119Q77 115 70 94Z" fill={hero||witch||fairy?'#f7cda0':imp?'#f09b67':boss?'#8cb775':'#a5cd88'}/>
+    <path d="M121 58L133 63L129 98L115 113L103 117Q120 92 121 58" fill="#293e43" opacity=".13" stroke="none"/>
+    {!hero&&!witch&&!fairy&&<><path d="M71 66L43 55L58 90L74 91M131 68L157 53L147 91L130 91" fill={imp?'#e98050':'#95bf7a'}/></>}
+    {hero&&!mage?<><path d="M61 75L61 46L81 30L110 32L132 46L141 76L123 72L113 53L99 67L86 53L77 80Z" fill="#73533e"/><path d="M69 44L94 38L111 42" stroke="#aa7a50"/><path d="M61 120L77 111L99 142L120 111L140 122L127 140L99 149L75 138Z" fill="#e9eff0"/><path d="M40 150L39 113L60 104L79 115L74 151L60 165Z" fill="#65a5a3"/><path d="M60 117V150M47 131H72" stroke="#f4d479"/><path d="M151 147L165 65L175 52L180 76L164 151Z" fill="#eef6ea"/><path d="M150 129L177 135" stroke="#dfa744"/></>:mage||witch||guard?<><path d="M65 70Q54 45 81 39H122Q143 50 137 78L121 58L107 73L92 56L77 81Z" fill={mage?'#f0eee0':witch?'#654c7a':'#2d6168'}/><path d="M51 55L89 8L104 34L122 24L147 58Q100 78 51 55Z" fill={coat}/><path d="M86 36L104 47L94 57L78 47Z" fill="#f7d772"/>{guard?<><path d="M155 116V151M144 142L165 141L171 165H142Z" fill="#f5cc69"/><path d="M147 149H167" stroke="#fff1ad"/></>:<><path d="M161 151L168 88" stroke="#8d6445"/><path d="M166 91L153 72L170 49L184 73Z" fill={witch?'#b7c17a':'#8fd8e2'}/><path d="M171 60L175 75" stroke="#f5fcdf"/></>}</>:boss||knight?<><path d="M63 65L53 19L76 31L84 8L101 34L123 8L132 32L151 20L137 71Z" fill={boss?'#e5b85f':'#94a9b5'}/><path d="M74 42H130L133 64H70Z" fill={boss?'#f6d985':'#c6d2d7'}/><path d="M78 126L100 147L124 124" fill="#e7c27b"/></>:imp?<><path d="M72 59Q42 32 62 15L66 36L87 49M123 52Q145 33 139 16Q165 37 135 64" fill="#e8ba70"/><path d="M47 132L28 100L43 95L62 124M148 132L178 111L176 142L155 149" fill="#e98156"/></>:<><path d="M63 60Q63 21 99 20Q137 22 139 61Z" fill="#b58d50"/><path d="M69 38L84 25L100 37L117 25L133 39" fill="none" stroke="#d4b276"/><path d="M99 20L105 8L118 9" fill="none"/></>}
+    <ellipse cx="85" cy="86" rx="5" ry="8" fill="#293e43"/><ellipse cx="116" cy="86" rx="5" ry="8" fill="#293e43"/><path d="M80 72L92 75M110 75L122 71" strokeWidth="3"/><path d="M88 103Q100 114 113 102" fill="#fff1d6" strokeWidth="3"/><path d="M75 99H81M122 97H128" stroke="#e99981" strokeWidth="3"/>
+   </>}
+  </g>
+  <path d="M28 59L33 47L38 59L50 63L38 67L33 79L28 67L16 63" fill="#fff1ae"/>
+ </svg>;
+}
+export function CartoonCardArt({id,type}:{id:string;type:string}) {
+ const ice=/freeze|ice|frost/.test(id),heal=/heal|wind|renew|blood/.test(id),shield=/guard|ward|armor|fortify/.test(id),rune=type==='rune',spell=type==='spell';
+ return <svg className="card-art cartoon-card-art" viewBox="0 0 160 82" aria-hidden="true"><ellipse cx="80" cy="47" rx="61" ry="29" fill={spell?'#b8d6d5':'#e6cd87'}/><g stroke="#293e43" strokeWidth="4" strokeLinejoin="round" strokeLinecap="round">
+ {rune?<><path d="M62 12H95L111 35L98 69H62L50 39Z" fill="#bd91a2"/><path d="M75 23L90 33L74 44L91 55" fill="none" stroke="#fff0af"/></>:heal?<><path d="M80 68Q35 43 52 22Q66 7 80 29Q95 8 110 24Q125 46 80 68Z" fill="#d98072"/><path d="M68 42H94M81 30V55" stroke="#fff1c7"/></>:shield?<><path d="M80 10L115 23L109 52L80 74L52 52L45 23Z" fill="#80b6b6"/><path d="M80 23V61M60 33H100" stroke="#f6dc8b"/></>:ice?<><path d="M80 6L95 31L130 41L95 52L80 76L65 52L31 41L65 31Z" fill="#9bd6e2"/><path d="M80 18V65M49 41H111" stroke="#effbf2"/></>:spell?<><path d="M71 70Q33 51 64 26L74 39L89 7L104 37Q127 60 88 72Z" fill="#eea051"/><path d="M78 63Q65 48 85 39Q104 65 78 63Z" fill="#ffe3a0" stroke="none"/></>:<><path d="M61 66L69 48L100 9L114 9L116 25L80 60L71 75Z" fill="#e7eff0"/><path d="M56 40L91 66" stroke="#c7974c"/><path d="M64 60L50 76" stroke="#7e6650"/></>}
+ </g><path d="M28 22L32 14L36 22L44 26L36 30L32 38L28 30L20 26" fill="#fff2bf"/></svg>;
+}
