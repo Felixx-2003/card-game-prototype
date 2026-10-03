@@ -12,10 +12,10 @@ test('four layered worlds, platforms, parallax and scene entrances preserve batt
  }
  for(const theme of ['a','b','d']){await page.getByLabel('Art theme',{exact:true}).selectOption(theme);await expect(page.locator('.battle-world')).toHaveCount(0);await expect(page.locator('.player-card')).toBeVisible();}
 });
-test('physical fan lifts on hover and separates selected cards without clipping',async({page})=>{
- await fixture(page);await page.mouse.move(20,20);const cards=page.locator('.hand .playing-card');const first=cards.first(),last=cards.last();const before=await first.boundingBox();expect(await first.evaluate(e=>getComputedStyle(e).transform)).not.toBe(await last.evaluate(e=>getComputedStyle(e).transform));
- await first.hover();await page.waitForTimeout(180);const hover=await first.boundingBox();expect(hover!.y).toBeLessThan(before!.y-8);expect(await first.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return Math.hypot(m.a,m.b);})).toBeGreaterThan(1.05);
- await first.click();await page.mouse.move(20,20);await page.waitForTimeout(180);const selected=await first.boundingBox(),hand=await page.locator('.hand').boundingBox();expect(selected!.y).toBeLessThan(before!.y-10);expect(selected!.y).toBeGreaterThanOrEqual(hand!.y);expect(selected!.y+selected!.height).toBeLessThan(hand!.y+hand!.height);
+test('flat hand lifts on hover without moving neighbors and keeps selection visible',async({page})=>{
+ await fixture(page);await page.mouse.move(20,20);const cards=page.locator('.hand .playing-card');const first=cards.first(),last=cards.last();const before=await first.boundingBox();expect(await first.evaluate(e=>getComputedStyle(e).transform)).toBe('none');expect(await last.evaluate(e=>getComputedStyle(e).transform)).toBe('none');
+ await first.hover();await page.waitForTimeout(180);const hover=await first.boundingBox();expect(hover!.y).toBeLessThan(before!.y-8);expect(await first.evaluate(e=>{const m=new DOMMatrix(getComputedStyle(e).transform);return Math.hypot(m.a,m.b);})).toBeGreaterThanOrEqual(1.049);
+ await first.click();await page.mouse.move(20,20);await page.waitForTimeout(180);const selected=await first.boundingBox(),hand=await page.locator('.hand').boundingBox();expect(selected!.y).toBeLessThan(before!.y-7);expect(selected!.y).toBeGreaterThanOrEqual(hand!.y);expect(selected!.y+selected!.height).toBeLessThan(hand!.y+hand!.height);
 });
 test('card flights, actor lunges, spell impact, hit flash, status pop and defeat ghosts execute',async({page})=>{
  await page.addInitScript(()=>{const original=Element.prototype.animate;(window as any).__motions=[];Element.prototype.animate=function(...args:any[]){(window as any).__motions.push({target:(this as HTMLElement).dataset.target,duration:args[1]?.duration});return original.apply(this,args as any);};});

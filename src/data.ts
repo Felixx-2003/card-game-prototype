@@ -44,6 +44,9 @@ const definitions: CardDef[] = [
   gear('oak-charm', 'Heal Charm', 1, 'Heal 3 HP each turn.', 'armor', { healPerTurn: 3 }, 'nature'),
   ...Object.values(RUNES).map(rune => ({ id: `rune-${rune.id}`, name: rune.name, type: 'rune' as const, cost: 0, description: rune.description, element: rune.id, rarity: 'rare' as const, target: 'card' as const, effect: {}, art: `rune-${rune.id}`, runeId: rune.id })),
 ];
+// Rarity is collectible presentation only; it does not change rules, reward weights or save IDs.
+const uncommon=new Set(['quick-slash','rally','hamstring','piercing-thrust','second-wind','ice-ward']);
+for(const card of definitions){if(uncommon.has(card.id))card.rarity='uncommon';if(card.id==='chain-lightning'||card.id==='venom-cloud')card.rarity='epic';if(card.id==='sunburst')card.rarity='legendary';}
 export const CARDS: Record<string, CardDef> = Object.fromEntries(definitions.map(card => [card.id, card]));
 export const HEROES: Record<HeroId, HeroDef> = {
   warrior: { id: 'warrior', name: 'Warrior', title: 'The Defender', hp: 74, attack: 2, defense: 1, maxEnergy: 3, passive: 'First Skill each turn costs 1 less Energy.', element: 'steel', equipmentSlots: ['weapon', 'armor'], startingDeck: ['slash', 'slash', 'slash', 'guard', 'guard', 'heavy-strike', 'fireball', 'flame-sword'], description: 'A sturdy defender who turns trusty gear into mighty attacks.' },

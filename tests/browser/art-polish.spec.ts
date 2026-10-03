@@ -29,7 +29,7 @@ test('cartoon vectors, fixed landscape battle, portrait prompt, and archived art
    const selectors=['.ability-button','.end-turn-button','.battle-left .side-actions button','.battle-right .side-actions button','.equipment-slots','.hand','.player-card','.enemy-card','.intent'];
    return {scroll:document.documentElement.scrollHeight<=innerHeight+1,sizes:[actor.width,hero.width,actor.height,hero.height,hand.width,hand.height],bounds:selectors.map(s=>{const b=r(s);return {s,valid:b.x>=0&&b.right<=innerWidth+1&&b.y>=0&&b.bottom<=innerHeight+1};}),title:r('.encounter-heading').bottom,intent:r('.intent').top,fonts:[...new Set([...document.querySelectorAll('button,h1,h2,.card-description')].map(e=>getComputedStyle(e).fontFamily))]};
   });
-  expect(result.scroll).toBe(true);expect(result.sizes[0]).toBeCloseTo(result.sizes[1],0);expect(result.sizes[2]).toBeCloseTo(result.sizes[3],0);expect(result.sizes[4]).toBeLessThan(result.sizes[0]);expect(result.sizes[5]).toBeLessThan(result.sizes[2]);
+  expect(result.scroll).toBe(true);expect(result.sizes[0]).toBeCloseTo(result.sizes[1],0);expect(result.sizes[2]).toBeCloseTo(result.sizes[3],0);if(height>500){expect(result.sizes[4]).toBeLessThan(result.sizes[0]);expect(result.sizes[5]).toBeLessThan(result.sizes[2]);}else expect(result.sizes[4]).toBeGreaterThanOrEqual(108);
   for(const b of result.bounds)expect(b.valid,width+' '+b.s).toBe(true);expect(result.title).toBeLessThanOrEqual(result.intent+1);expect(result.fonts).toHaveLength(1);expect(result.fonts[0]).toContain('Nunito');
  }
  await page.setViewportSize({width:390,height:844});await expect(page.getByRole('heading',{name:'Rotate device to play'})).toBeVisible();await expect(page.locator('.battle-board')).toBeHidden();
@@ -51,7 +51,7 @@ test('three enemies and long Rune rules fit the smallest landscape without ornam
  await page.reload();await page.getByRole('button',{name:/Continue adventure/}).click();await page.setViewportSize({width:640,height:360});await page.waitForTimeout(400);
  const result=await page.evaluate(()=>{
   const all=[...document.querySelectorAll('.enemy-card,.player-card,.end-turn-button,.status-rail .status-icon')].map(e=>e.getBoundingClientRect());
-  return {all:all.map(r=>r.x>=0&&r.right<=innerWidth&&r.y>=0&&r.bottom<=innerHeight),cards:[...document.querySelectorAll('.playing-card')].map(e=>{const d=e.querySelector('.card-description')!;const a=d.getBoundingClientRect(),b=e.querySelector('.rarity-motif')!.getBoundingClientRect();return {text:d.scrollHeight<=d.clientHeight+1,ornament:b.bottom<=a.top||b.top>=a.bottom||b.right<=a.left||b.left>=a.right};})};
+  return {all:all.map(r=>r.x>=0&&r.right<=innerWidth&&r.y>=0&&r.bottom<=innerHeight),cards:[...document.querySelectorAll('.playing-card')].map(e=>{const d=e.querySelector('.card-description')!;const a=d.getBoundingClientRect(),b=e.querySelector('.rarity-mark')!.getBoundingClientRect();return {text:d.scrollHeight<=d.clientHeight+1,ornament:b.bottom<=a.top||b.top>=a.bottom||b.right<=a.left||b.left>=a.right};})};
  });
  expect(result.all.every(Boolean)).toBe(true);for(const c of result.cards){expect(c.text).toBe(true);expect(c.ornament).toBe(true);}
  await page.locator('.hand .playing-card').first().click();

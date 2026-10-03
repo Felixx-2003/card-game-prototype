@@ -6,10 +6,11 @@ async function snapshot(page: any) { return page.evaluate((key:string)=>JSON.par
 test('both hero actives animate, spend Energy, enforce cooldown; passive visibly triggers',async({page})=>{
   for(const hero of ['warrior','mage']) {
     await start(page,hero); const before=await snapshot(page);
-    const active=page.locator('.ability-button'); await expect(active).toBeEnabled(); await expect(active).toHaveAttribute('title',/3 turns/); await active.click();
+    const active=page.locator('.ability-button'); await expect(active).toBeEnabled(); await active.hover();await expect(page.getByRole('tooltip')).toContainText('3 turns');await page.keyboard.press('Escape'); await active.click();
     await expect(page.locator('.ability-overlay')).toBeVisible(); await expect(active).toBeDisabled(); const after=await snapshot(page);
     expect(after.energy).toBe(2); expect(after.activeReadyTurn).toBe(4); expect(after.enemies[0].hp).toBeLessThan(before.enemies[0].hp);
     await expect(page.locator('.ability-overlay')).toHaveCount(0);
+    await page.locator('.ability-help').focus();await expect(page.getByRole('tooltip')).toContainText('3 turns');await page.keyboard.press('Escape');
     const card=page.locator(`.hand .${hero==='warrior'?'skill':'spell'}:not(.unaffordable)`).first(); await card.click();
     const id=await card.getAttribute('data-card-id'); const kind=await page.evaluate(async id=>{const path='/src/data.ts';return (await import(path)).CARDS[id!].target;},id); const target=kind==='hero'?'[data-target="hero"]':'.enemy-card:not(:disabled)'; await page.locator(target).first().click();
     await expect(page.locator('.passive-skill')).toContainText('Triggered!');

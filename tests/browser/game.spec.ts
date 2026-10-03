@@ -3,11 +3,13 @@ import { test, expect, type Page } from '@playwright/test';
 const SAVE = 'card-game-prototype-v1';
 async function state(page: Page) { return page.evaluate(key => JSON.parse(localStorage.getItem(key) || 'null'), SAVE); }
 async function drag(page: Page, source: string, target?: string) {
+  await page.locator(source).hover();await expect.poll(()=>page.locator(source).evaluate(e=>e.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations!==Infinity).length)).toBe(0);
   const a = await page.locator(source).boundingBox();
   expect(a).toBeTruthy();
   await page.mouse.move(a!.x + a!.width / 2, a!.y + a!.height / 2);
   await page.mouse.down();
   if (target) {
+    await expect.poll(()=>page.locator(target).first().evaluate(e=>e.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getTiming().iterations!==Infinity).length)).toBe(0);
     const b = await page.locator(target).first().boundingBox(); expect(b).toBeTruthy();
     await page.mouse.move(b!.x + b!.width / 2, b!.y + b!.height / 2, { steps: 12 });
   } else await page.mouse.move(25, 95, { steps: 12 });
