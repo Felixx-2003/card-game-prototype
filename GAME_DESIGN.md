@@ -11,3 +11,5 @@ Onboarding: title screen explains the hook; an optional three-page visual field 
 
 Character actives: Power Strike (Warrior) deals 12 to every enemy and grants 8 Shield; Magic Burst (Mage) deals 10 to every enemy, adds 2 Burn, draws one. Both cost 1 Energy and are ready again three turns later; cooldown resets each battle. Existing first-Skill discount / first-Spell +2 passive now has a named icon and trigger pulse.
 Forest boons: one unique choice per camp, permanent through the run. Data registry in abilities.ts aggregates Skill damage, first-Spell discounts, opening Shield and Rune strength. No boon changes baseline combat until chosen. Optional save fields preserve old v1 saves. Upgrade selection locks other upgrades and highlights Back to the path; Extra Upgrade extras require clicking Use extra upgrade. Rune attachment/removal stays available.
+
+World presentation is cosmetic: the four encounters map to forest/grove/ruins/arena, with short scene entrance transitions. Battle animations run without delaying or changing engine actions. Preserve original HP, damage, costs, cooldowns, statuses and rewards. UI transient motion/death ghosts never enter saves.

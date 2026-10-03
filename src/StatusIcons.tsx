@@ -17,7 +17,7 @@ export function EffectSymbol({ name }: { name: StatusIconName }) {
 
 export function StatusIcons({ statuses, shield = 0, side = 'right' }: { statuses: Statuses; shield?: number; side?: 'left' | 'right' }) {
   const effects: [StatusIconName, number][] = [...(shield > 0 ? [['shield', shield] as [StatusIconName, number]] : []), ...Object.entries(statuses).filter(([, value]) => (value || 0) > 0) as [StatusIconName, number][]];
-  return <div className={`status-rail ${side}`} aria-label="Active effects">{effects.map(([key, count]) => <span key={key} className={`status-icon status-${key}`} tabIndex={0} role="img" aria-label={`${STATUS_VISUALS[key].name}, ${count}${key === 'shield' ? ' protection' : ' stacks'}`}>
+  return <div className={`status-rail ${side}`} aria-label="Active effects">{effects.map(([key, count]) => <span key={key+'-'+count} className={`status-icon status-${key}`} tabIndex={0} role="img" aria-label={`${STATUS_VISUALS[key].name}, ${count}${key === 'shield' ? ' protection' : ' stacks'}`}>
     <EffectSymbol name={key} /><b className="status-count" aria-hidden="true">{count}</b>
     <span className="status-tooltip" role="tooltip"><strong>{STATUS_VISUALS[key].name} · {count}</strong><span>{STATUS_RULES[key]}</span></span>
   </span>)}</div>;
