@@ -1,0 +1,8 @@
+# V1 rules
+
+Two heroes, Warrior and Mage, eight-card starting decks, three energy, draw to five. Retain unused hand cards; recycle discard when drawing. Select and discard unwanted cards freely; replacements draw next turn, preventing unusable hands from locking the run.
+Four encounters: normal, normal, elite, boss. Recover 10 HP after each non-boss victory; choose one of three rewards. Between battles allow one upgrade and rune attachment/replacement/removal. Masterwork reward adds an extra upgrade. Boss changes pattern at half HP. Reward pools make all content obtainable across runs.
+Warrior: first Skill costs one less. Mage: first Spell gains a small effect bonus. Weapon and armor/accessory slots; replacing gear returns old gear to discard. Gear persists during the encounter and returns to deck next encounter.
+One compatible rune per card, persistent through run, replace/remove only between encounters. Rune effects are modifiers. Runes attach during battle by dragging to a compatible hand card, or at camp by clicking a rune then its target. Rune cards cost zero and are consumed on attachment. Removed/replaced runes return as cards. Feather reduces cost to a minimum of zero. Chain requires a single-target attack. Weapon runes trigger with matching offensive Skills/Spells.
+Burn/Poison tick at end of round; Freeze skips one enemy action; Weak reduces attack; Vulnerable amplifies damage; Shield absorbs damage and expires at the start of its owner's turn. Status details must be visible in UI.
+Content target: 12 Skills, 8 Spells, 6 Equipment, 8 Runes, five normals, two elites, one boss. No copied art. Saves local only. Click-target alternatives alongside pointer dragging.
