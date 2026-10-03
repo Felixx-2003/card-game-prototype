@@ -20,6 +20,7 @@ for (const hero of ['warrior', 'mage']) test(`${hero}: complete adventure throug
   test.setTimeout(120000);
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   await page.evaluate(() => { Date.now = () => 42; });
+  if (hero === 'mage') await page.getByLabel('Art theme', { exact: true }).selectOption('b');
   await page.getByRole('button', { name: /New adventure/ }).click();
   await page.locator(`.hero-choice.${hero}`).click();
   await expect(page.locator('.battle-board')).toBeVisible();
@@ -113,7 +114,7 @@ test('rune drag, gear replacement and status resolution use visible mouse contro
   await expect(page.locator('.gear-slot').nth(1)).toContainText('Oak Charm');
   expect((await state(page)).discard).toContain(armor);
   await drag(page, '.hand [data-card-id="heavy-strike"]', '[data-target="enemy-0"]');
-  await expect(page.locator('[data-target="enemy-0"] .status-burn')).toContainText('burn 2');
+  await expect(page.locator('.enemy-wrap').first().getByRole('img', { name: 'Burn, 2 stacks', exact: true })).toBeVisible();
   const hp = (await state(page)).hp;
   await page.getByRole('button', { name: /End turn/ }).click();
   expect((await state(page)).hp).toBe(hp);
