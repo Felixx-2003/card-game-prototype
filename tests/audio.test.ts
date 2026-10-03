@@ -90,6 +90,25 @@ describe('audio preferences and lifecycle', () => {
     expect(vi.getTimerCount()).toBe(1);
   });
 
+  it('adds soft low rhythmic pulses to battle and danger themes', async () => {
+    controller.setScene('battle');
+    await controller.unlock();
+    const context = FakeContext.instances[0];
+    const isShortLowPulse = (oscillator: Oscillator) => {
+      const frequency = oscillator.frequency.setValueAtTime.mock.calls[0]?.[0] as number | undefined;
+      const start = oscillator.start.mock.calls[0]?.[0] as number | undefined;
+      const stop = oscillator.stop.mock.calls[0]?.[0] as number | undefined;
+      return frequency !== undefined && frequency < 100 && start !== undefined && stop !== undefined && stop - start < 0.13;
+    };
+    expect(context.oscillators.some(isShortLowPulse)).toBe(true);
+
+    controller.setScene('danger');
+    context.currentTime = 4;
+    vi.advanceTimersByTime(100);
+    const dangerNotes = context.oscillators.slice(8);
+    expect(dangerNotes.some(isShortLowPulse)).toBe(true);
+  });
+
   it('persists preferences, applies separate gains, and silences music without silencing effects', async () => {
     const listener = vi.fn();
     const unsubscribe = controller.subscribe(listener);

@@ -1,0 +1,106 @@
+/* Shared font and final presentation contracts. A/B art stays available. */
+@font-face { font-family: Nunito; src: url('/fonts/Nunito.ttf') format('truetype'); font-weight: 200 1000; font-display: swap; }
+:root, .game-shell[data-theme] { --font: Nunito, sans-serif; --display: Nunito, sans-serif; font-family: var(--font); }
+.game-shell :where(button, input, select, textarea) { font-family: var(--font); }
+.modal-backdrop { padding: 24px; background: #18312dcc; overflow: auto; }
+.modal-mount { display: contents; }
+.modal-backdrop [role='dialog'] { margin: 0; max-height: calc(100dvh - 48px); overflow-y: auto; border-radius: 24px; box-shadow: 0 20px 70px #10292466; }
+.settings-panel { width: min(480px, 100%); padding: 28px; }
+.tutorial-modal { width: min(840px, 100%); padding: 28px; }
+.settings-heading { gap: 20px; }.settings-heading h2 { font-size: 30px; }
+.settings-group { margin: 18px 0; padding: 16px; border-color: #a6baaa; }
+.settings-toggle, .settings-volume, .settings-theme { font-size: 16px; }
+.settings-hint { font-size: 14px; }.lesson-card { border-radius: 16px; }
+
+/* Guidance and all former footer labels sit above combat, never behind the hand. */
+.game-shell.is-battle .battle-board { grid-template-rows: 46px 30px 44px calc(var(--actor-h) + 36px) var(--actor-h) minmax(0,1fr); }
+.game-shell.is-battle .target-instructions { grid-row: 1; min-height: 0; border-radius: 14px; padding: 5px 12px; }
+.game-shell.is-battle .battle-footer { grid-row: 2; margin: 0; border: 0; padding: 2px 5px; min-height: 0; position: relative; z-index: 5; }
+.game-shell.is-battle .encounter-heading { grid-row: 3; }
+.game-shell.is-battle .enemy-row { grid-row: 4; }
+.game-shell.is-battle .player-zone { grid-row: 5; }
+.game-shell.is-battle .hand { grid-row: 6; }
+.game-shell.is-battle .hand .card-art { height: 38px; }
+.game-shell.is-battle .hand .card-description { font-size: 13px; line-height: 1.22; }
+.game-shell.is-battle .hand .playing-card { overflow: visible; }
+.last-log { color: var(--ink); }
+
+/* Shape, ornament and contrast distinguish rarity even without reading labels. */
+.playing-card { --frame-color: #8a967b; }
+.playing-card.common { border: 2px solid var(--frame-color); }
+.playing-card.rare { --frame-color: #398d9e; border: 3px double var(--frame-color); background-image: linear-gradient(145deg, #d5f0eb88, transparent 48%); }
+.playing-card.epic { --frame-color: #b77922; border: 3px solid var(--frame-color); background-image: linear-gradient(145deg, #ffe3a7aa, transparent 48%); box-shadow: 0 4px 0 #8e641e, inset 0 0 0 2px #ffe8ad, 0 5px 16px #bc863e33; }
+.playing-card.rare:before { border: 1px solid #88c9cf; inset: 4px; border-radius: 10px; }
+.playing-card.epic:before { border: 2px double #d6a54c; inset: 4px; border-radius: 10px; }
+.rarity-motif { position: absolute; bottom: 2px; right: 8px; color: var(--frame-color); letter-spacing: 3px; font-size: 10px; line-height: 12px; pointer-events: none; }
+.playing-card.rare .rarity-motif, .playing-card.epic .rarity-motif { top: -8px; bottom: auto; right: 8px; background: var(--paper-light); padding: 1px 5px; border: 1px solid var(--frame-color); border-radius: 8px; }
+.playing-card.epic .rarity-motif { clip-path: polygon(8% 0,92% 0,100% 50%,92% 100%,8% 100%,0 50%); }
+
+/* Replacement C: luminous, illustrated anime fantasy, warm ivory and deep jade. */
+.game-shell[data-theme='c'] { --ink: #243c43; --ink-soft: #536c70; --paper: #f5eddd; --paper-light: #fffaf0; --forest: #28776e; --forest-dark: #185d58; --moss: #97b88b; --ochre: #e6ae4c; --coral: #c9634e; --teal: #73b6ac; --board: #d0e1cc; --border: 2px solid #4f7169; --card-border: 2px solid #496f65; --shadow: 0 4px 0 #42645b, 0 10px 24px #264b4226; background: radial-gradient(ellipse at 45% 32%, #fff2cc 0%, #deebcd 35%, #abcbbd 75%, #80aaa3 100%); }
+.game-shell[data-theme='c']:before { background: radial-gradient(ellipse at 80% 10%, #fff4bf 0, transparent 30%); opacity: .6; }
+.game-shell[data-theme='c'] .forest-decoration { opacity: .12; }
+.game-shell[data-theme='c'] .game-header { background: #f9f2df; border-bottom: 1px solid #a9b8a3; }
+.game-shell[data-theme='c'] .actor-card { padding: 5px; border: 2px solid #50796f; background: #f9f1dd; border-radius: 15px; box-shadow: 0 4px 0 #42645b, 0 10px 22px #264b4233; overflow: visible; }
+.game-shell[data-theme='c'] .actor-title { background: #f9f1dd; padding: 0 3px; color: #264b43; font-weight: 900; border: 0; border-radius: 9px; }
+.game-shell[data-theme='c'] .enemy-card { border-color: #9e6a49; box-shadow: 0 4px 0 #83543f, 0 10px 22px #58332025; }
+.game-shell[data-theme='c'] .enemy-card .actor-title { color: #8a4a35; background: #fff0d5; }
+.game-shell[data-theme='c'] .playing-card { border-radius: 13px; box-shadow: 0 4px 0 #5c7461, 0 8px 15px #36524422; }
+.game-shell[data-theme='c'] .playing-card.rare { border: 3px double #398d9e; box-shadow: 0 4px 0 #246979, 0 8px 16px #367c7c33; }
+.game-shell[data-theme='c'] .playing-card.epic { border: 3px solid #b77922; box-shadow: 0 4px 0 #8e641e, inset 0 0 0 2px #ffe8ad, 0 5px 18px #bc863e44; }
+.game-shell[data-theme='c'] .playing-card:before { border-radius: 9px; }
+.game-shell[data-theme='c'] .primary-button, .game-shell[data-theme='c'] .end-turn-button { color: #fffaf0; border: 2px solid #235a51; background: linear-gradient(#438f7e,#277060); box-shadow: 0 4px 0 #234b42, inset 0 1px 0 #a1ccb299; border-radius: 14px; }
+.game-shell[data-theme='c'] .end-turn-button { background: linear-gradient(#df9270,#bf654d); border-color: #88442f; box-shadow: 0 4px 0 #88442f; }
+.game-shell[data-theme='c'] .target-instructions { background: #fff7e9; border: 1px solid #b2c3a4; box-shadow: none; }
+.illustrated-portrait, .illustrated-card-art { display: block; background-image: none; background-repeat: no-repeat; background-size: 400% 400%; border-radius: 9px; }
+.illustrated-portrait { aspect-ratio: 1; width: 100%; }
+.is-battle .actor-card > .illustrated-portrait { width: 100%; flex: 1; min-height: 0; margin: 3px 0; }
+.illustrated-card-art { border: 0; border-radius: 7px; }
+.hero-choice > .illustrated-portrait { height: 200px; width: 100%; }
+.menu-hero .illustrated-portrait, .menu-mage .illustrated-portrait { width: 100%; height: 100%; border-radius: 30px; box-shadow: 0 12px 25px #25413944; border: 3px solid #f9e8b9; }
+.ending-art > .illustrated-portrait { height: 250px; }
+.lesson-art > .illustrated-portrait { width: 110px; height: 110px; }
+.lesson-art > .illustrated-card-art { width: 140px; height: 110px; }
+.game-shell[data-theme='c'] .sun-disc { opacity: .25; }
+
+@media (min-width: 1100px) and (min-height: 950px) {
+ .game-shell.is-battle .battle-board { grid-template-rows: 46px 30px 52px minmax(272px,1fr) 236px 236px; }
+ .game-shell.is-battle .hand .card-art { height: 60px; }.game-shell.is-battle .hand .card-description { font-size: 16px; }
+}
+@media (max-width: 720px) {
+ .modal-backdrop { padding: 14px; }.modal-backdrop [role='dialog'] { max-height: calc(100dvh - 28px); padding: 20px 16px; }
+ .tutorial-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }.lesson-card { padding: 8px 5px; }
+ .lesson-card h3 { font-size: 14px; }.lesson-card p { font-size: 12px; }.lesson-art { height: 78px; }
+ .lesson-art > .illustrated-portrait { width: 65px; height: 70px; }.lesson-art > .illustrated-card-art { width: 75px; height: 70px; }
+ .game-shell.is-battle .battle-board, .game-shell.is-battle .battle-board:has(.battle-tips) { grid-template-rows: 64px 30px 54px calc(var(--actor-h) + 28px) calc(var(--actor-h) + 46px) minmax(0,1fr); }
+ .game-shell.is-battle .hand { padding-top: 14px; padding-bottom: 14px; }
+ .game-shell.is-battle .hand .card-art { height: 28px; }.game-shell.is-battle .hand .card-description { font-size: 13px; }
+ .game-shell.is-battle .battle-footer { font-size: 11px; }.last-log { max-width: 45%; }
+ .settings-theme { flex-direction: column; align-items: stretch; gap: 6px; }
+}
+
+.game-shell[data-theme='c'] .playing-card.rare { border-width: 4px; background-image: linear-gradient(145deg, #bde8edaa, transparent 65%); }
+.game-shell[data-theme='c'] .playing-card.epic { border-width: 4px; background-image: linear-gradient(145deg, #ffdc92cc, transparent 65%); }
+.game-shell[data-theme='c'] .playing-card.rare:before { border: 1px solid #76bfc8; }
+.game-shell[data-theme='c'] .playing-card.epic:before { border: 2px double #d6a54c; }
+
+.game-shell.is-battle .battle-board { grid-template-columns: minmax(0,1fr); }
+.battle-board > * { min-width: 0; }
+@media (max-width:720px) {
+ .battle-board:has(.enemy-wrap:nth-child(3)) { --actor-w: 96px; --hand-w: 94px; --hand-h: 168px; }
+ .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) .enemy-row { gap: 34px; }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .enemy-wrap { width: var(--actor-w); flex: 0 0 var(--actor-w); }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .intent { min-width: 0; width: var(--actor-w); padding: 2px; font-size: 10px; line-height: 11px; white-space: normal; }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .actor-title { font-size: 10px; white-space: normal; line-height: 14px; }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .hand .playing-card { width: var(--hand-w); flex-basis: var(--hand-w); }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .hand .card-name { white-space: normal; font-size: 12px; line-height: 13px; }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .hero-and-gear { gap: 32px; }
+}
+
+@media (max-width:720px) {
+ .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) { grid-template-rows: 64px 30px 54px calc(var(--actor-h) + 36px) calc(var(--actor-h) + 46px) minmax(0,1fr); }
+ .battle-board:has(.enemy-wrap:nth-child(3)) .intent { height: 30px; margin-bottom: 4px; }
+ .game-shell.is-battle .battle-board:has(.enemy-wrap:nth-child(3)) .hand { padding-bottom: 10px; }
+}
+
+.game-shell.is-battle .hand .playing-card.rune .card-art, .game-shell.is-battle .hand .playing-card:has(.rune-seal) .card-art { height: 18px; }

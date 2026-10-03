@@ -20,7 +20,7 @@ for (const hero of ['warrior', 'mage']) test(`${hero}: complete adventure throug
   test.setTimeout(120000);
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   await page.evaluate(() => { Date.now = () => 42; });
-  if (hero === 'mage') await page.getByLabel('Art theme', { exact: true }).selectOption('b');
+  if (hero === 'mage') await page.getByLabel('Art theme', { exact: true }).selectOption('c');
   await page.getByRole('button', { name: /New adventure/ }).click();
   await page.locator(`.hero-choice.${hero}`).click();
   await expect(page.locator('.battle-board')).toBeVisible();

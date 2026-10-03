@@ -12,13 +12,18 @@ function readSettings(): AudioSettings {
 }
 
 // Original procedural themes: each phrase has its own contour, pulse and harmony.
-const MUSIC: Record<MusicScene, { melody: number[]; roots: number[]; beat: number; noteLength: number }> = {
-  menu: { melody: [69,72,76,74,72,69,67,64,65,69,72,76,74,72,69,67,64,67,71,74,72,71,67,64,65,69,72,74,72,69,67,69], roots: [45,41,48,43], beat: .6, noteLength: .95 },
-  battle: { melody: [64,71,67,74,69,76,72,67,64,72,69,76,71,67,74,69,65,72,69,77,72,69,76,71,67,74,71,79,74,71,77,72], roots: [40,43,36,38], beat: .42, noteLength: .34 },
-  danger: { melody: [57,64,60,63,57,65,60,62,55,62,59,65,55,63,59,62,53,60,57,63,53,62,57,60], roots: [33,34,29], beat: .48, noteLength: .4 },
-  progression: { melody: [72,76,79,76,81,79,76,72,74,77,81,84,81,77,74,72,76,79,83,79,84,83,79,76,77,81,84,86,84,81,77,76], roots: [48,53,50,55], beat: .46, noteLength: .42 },
-  victory: { melody: [72,76,79,84,83,79,76,72,74,77,81,86,84,81,77,74,76,79,84,88,86,84,79,76], roots: [48,53,55], beat: .5, noteLength: .56 },
-  defeat: { melody: [64,62,60,57,59,57,55,52,57,55,53,50,52,50,48,45], roots: [40,38,36,33], beat: .72, noteLength: .64 },
+const MUSIC: Record<MusicScene, { melody: number[]; roots: number[]; beat: number; noteLength: number; pulse?: 'battle' | 'danger' }> = {
+  // Broad, rising intervals over a gentle walking bass give the title screen a sense of travel.
+  menu: { melody: [69,76,74,72,67,69,72,76,79,76,74,72,69,71,74,79,77,74,72,69,67,72,76,81,79,76,74,71,72,76,79,84], roots: [45,41,48,43], beat: .48, noteLength: .37 },
+  // A brisk, square-footed heroic line; low pulses accent alternate beats without sharp transients.
+  battle: { melody: [64,64,71,67,69,72,76,72,67,67,74,71,72,76,79,76,65,65,72,69,71,74,77,74,67,67,74,71,72,76,79,76], roots: [40,43,36,38], beat: .3, noteLength: .22, pulse: 'battle' },
+  // Descending minor fragments and a persistent pulse make danger feel tighter and more urgent.
+  danger: { melody: [57,60,63,62,57,60,65,63,55,59,62,60,55,59,63,62,53,57,60,58,53,57,62,60], roots: [33,34,29], beat: .34, noteLength: .24, pulse: 'danger' },
+  // Open major arpeggios and a rising answer make each reward scene feel like forward progress.
+  progression: { melody: [72,76,79,84,79,76,74,77,81,86,81,77,76,79,83,88,83,79,77,81,84,89,84,81,79,83,86,91,86,83,81,84], roots: [48,53,50,55], beat: .34, noteLength: .27 },
+  victory: { melody: [72,79,84,88,84,79,76,81,86,91,86,81,79,84,88,96,93,88,84,81,76,84,88,91], roots: [48,53,55], beat: .4, noteLength: .34 },
+  // A slower falling phrase with a suspended final tone gives defeat a calm, resolved ending.
+  defeat: { melody: [64,62,59,57,55,57,52,50,57,55,52,50,52,50,47,45], roots: [40,38,36,33], beat: .58, noteLength: .48 },
 };
 const hz = (midi: number) => 440 * Math.pow(2, (midi - 69) / 12);
 
@@ -134,6 +139,12 @@ export class AudioController {
       const rest = variation === 1 && index % 11 === 5;
       const octave = variation === 1 && index % 8 >= 5 ? 12 : variation === 2 && index % 8 < 2 ? -12 : 0;
       if (!rest) this.tone(hz(baseNote + octave), this.nextNote, pattern.noteLength, 'sine', 0.22, this.musicGain, true);
+      if (pattern.pulse && (pattern.pulse === 'danger' || index % 2 === 0)) {
+        // A short, soft low sine thump adds meter without a bright or percussive click.
+        const root = pattern.roots[(Math.floor(index / 8) + phrase) % pattern.roots.length];
+        const accent = pattern.pulse === 'danger' && index % 4 === 3;
+        this.tone(hz(root - (accent ? 5 : 12)), this.nextNote, 0.095, 'sine', accent ? 0.075 : 0.055, this.musicGain, true, hz(root - 18));
+      }
       if (index % 8 === 0) {
         const root = pattern.roots[(Math.floor(index / 8) + phrase) % pattern.roots.length];
         const harmonyDuration = pattern.beat * (variation === 1 ? 3.5 : 7.5);

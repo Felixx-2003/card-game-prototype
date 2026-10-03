@@ -49,7 +49,7 @@ test('both themes keep a fixed battle screen and consistent card hierarchy', asy
       expect(layout.hand.w).toBeLessThan(layout.hero.w + (width < 500 ? 1 : 0)); expect(layout.hand.h).toBeLessThan(layout.hero.h);
       expect(layout.turn.bottom).toBeLessThan(height); expect(layout.footer.bottom).toBeLessThanOrEqual(height + 1);
       expect(layout.title.bottom).toBeLessThanOrEqual(layout.intent.y + 1);
-      expect(layout.font).toContain('Segoe UI');
+      expect(layout.font).toContain('Nunito');
       await page.mouse.wheel(0, 600); expect(await page.evaluate(() => scrollY)).toBe(0);
     }
   }

@@ -1,5 +1,6 @@
 export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { kind?: string; className?: string; theme?: 'a' | 'b' | 'c' }) {
-  if (theme !== 'a') return <PolishedPortrait kind={kind} className={className} />;
+  if (theme === 'c') return <IllustratedArt kind={kind} className={className} />;
+  if (theme === 'b') return <PolishedPortrait kind={kind} className={className} />;
   const mage = kind === 'mage';
   const boss = /boss|regent|warden|king|colossus/.test(kind);
   const enemy = !['warrior', 'mage'].includes(kind);
@@ -23,7 +24,8 @@ export function Portrait({ kind = 'warrior', className = '', theme = 'a' }: { ki
 }
 
 export function CardArt({ type, id, theme = 'a' }: { type: string; id: string; theme?: 'a' | 'b' | 'c' }) {
-  if (theme !== 'a') return <PolishedCardArt type={type} id={id} />;
+  if (theme === 'c') return <IllustratedArt kind={id} type={type} />;
+  if (theme === 'b') return <PolishedCardArt type={type} id={id} />;
   const spell = type === 'spell'; const rune = type === 'rune'; const equipment = type === 'equipment';
   const guard = /guard|shield|armor|ward|defend|fortify/.test(id);
   const heal = /heal|mend|renew|blood|siphon/.test(id);
@@ -86,4 +88,11 @@ function PolishedCardArt({ type, id }: { type: string; id: string }) {
       {type === 'rune' ? <><path d="M69 9H94L108 32L99 68L75 74L54 49L58 25Z" fill="#df9b79" /><path d="M72 19H87L95 34L91 59L77 64L65 47L68 30Z" fill="#bd765e" stroke="none" /><path d="M77 22L89 34L76 46L88 58M76 46L67 38" stroke="#fff3bf" fill="none" /></> : heal ? <><path d="M80 69L53 49Q32 27 53 16Q72 8 80 26Q93 7 109 18Q129 32 105 52Z" fill="#f18873" /><path d="M52 24Q47 33 59 45" stroke="#ffd5b4" /><path d="M72 32H89V43H99V53H89V63H77V53H66V43H77Z" fill="#fff8d6" stroke="none" /></> : guard ? <><path d="M80 7L112 22L107 54L80 75L53 54L48 22Z" fill="#4c9da7" /><path d="M80 16L102 27L97 49L80 63L63 49L59 27Z" fill="#96d4d1" stroke="none" /><path d="M80 16V63M64 32H97" stroke="#fff1a3" /></> : type === 'spell' ? <><path d="M77 70Q44 57 58 33L74 45L91 8L103 38Q123 54 95 71Z" fill="#ef9556" /><path d="M80 68Q63 57 77 44L88 50L94 33L100 55L91 69Z" fill="#ffe695" stroke="none" /><path d="M45 19L48 11M119 29L128 23M120 60L130 65" stroke="#ed9656" /></> : <><path d="M58 67L73 46L112 6L119 9L118 23L85 59L68 73Z" fill="#e4f3e3" /><path d="M75 50L114 13" stroke="#fff" strokeWidth="2" /><path d="M61 43L90 64" stroke="#e1a049" strokeWidth="8" /><path d="M64 62L53 75" stroke="#765442" strokeWidth="8" /><path d="M40 18L56 23M122 51L139 52M106 74L121 72" stroke="#fff8db" strokeWidth="4" /></>}
     </g>
   </svg>;
+}
+
+/** Original generated 4×4 illustration atlas; A/B vector art remains unchanged. */
+const PORTRAIT_CELLS: Record<string, number> = { warrior: 0, mage: 1, 'acorn-raider': 2, 'moss-shell': 3, 'ember-imp': 4, 'briar-witch': 5, 'bell-sprite': 6, 'bramble-knight': 7, 'lantern-warden': 8, 'hollow-regent': 9 };
+function IllustratedArt({ kind, type, className = '' }: { kind: string; type?: string; className?: string }) {
+  const cell = type ? type === 'rune' || /arcane|ring|chain-lightning/.test(kind) ? 15 : /heal|mend|renew|blood|siphon|wind/.test(kind) ? 14 : /freeze|ice|frost/.test(kind) ? 13 : /guard|shield|armor|ward|fortify/.test(kind) ? 11 : type === 'spell' ? 12 : 10 : PORTRAIT_CELLS[kind] ?? 2;
+  return <svg className={type ? 'card-art illustrated-card-art' : `illustrated-portrait ${className}`} viewBox={`${(cell % 4) * 100} ${Math.floor(cell / 4) * 100} 100 100`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-illustration-cell={cell}><image href="/art/storybook-atlas.png" x="0" y="0" width="400" height="400" /></svg>;
 }
